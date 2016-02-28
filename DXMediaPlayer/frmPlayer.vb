@@ -9,7 +9,7 @@ Public Class frmPlayer
 
     Private Sub frmPlayer_Load(sender As Object, e As EventArgs) Handles Me.Load
         GetInitialDataset(false)
-        'LabelTPH_L.Text = "Sonos Media Player"
+        LabelTPH_L.Text = "Sonos Media Player"
     End Sub
 
 #Region "Data Handling"

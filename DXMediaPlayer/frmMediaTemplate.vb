@@ -58,15 +58,21 @@ Public Class frmMediaTemplate
     '// a central place to setup skinning overrides.
     Private Sub SetSkinStylingOverrides
         dicSkins.Add(PanelTop.Name, New SkinStyler With {.IsImage = "True",
-                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 0})
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
         dicSkins.Add(PanelLeftHeader.Name, New SkinStyler With {.IsImage = "True",
-                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 1})
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
         dicSkins.Add(PanelRightHeader.Name, New SkinStyler With {.IsImage = "True",
-                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 1})
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
         dicSkins.Add(PanelCenterHeader.Name, New SkinStyler With {.IsImage = "True",
-                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 1})
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
+        dicSkins.Add(PanelLeftFooter.Name, New SkinStyler With {.IsImage = "True",
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
+        'dicSkins.Add(PanelRightHeader.Name, New SkinStyler With {.IsImage = "True",
+        '                          .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
+        dicSkins.Add(PanelCenterFooter.Name, New SkinStyler With {.IsImage = "True",
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
         dicSkins.Add(PanelLeftXtraHeader.Name, New SkinStyler With {.IsImage = "True",
-                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 4})
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 0})
         dicSkins.Add(TileView1.Name, New SkinStyler With {.IsImage = "True",
                                   .Skins = commonSkins, .ElementName = "HighlightedItem", .ImageIndex = 0})
         '// use this tag to flag buttons where we want to rescale the images 
@@ -83,7 +89,9 @@ Public Class frmMediaTemplate
 #Region "Panel Painting and Button, Label Resizing"
 
     '// demonstrating overriding paint method and using a skin image 
-    Private Sub PanelBackGround_Paint(sender As Object, e As PaintEventArgs) Handles PanelTop.Paint, PanelLeftHeader.Paint, PanelCenterHeader.Paint, PanelRightHeader.Paint, PanelLeftXtraHeader.Paint
+    Private Sub PanelBackGround_Paint(sender As Object, e As PaintEventArgs) Handles PanelTop.Paint, 
+            PanelLeftHeader.Paint, PanelCenterHeader.Paint, PanelRightHeader.Paint, 
+            PanelLeftFooter.Paint, PanelCenterFooter.Paint, PanelLeftXtraHeader.Paint
         Dim skinStyler As SkinStyler = dicSkins(sender.Name)
         e.Graphics.DrawImage(DrawButtonSkinGraphic(dxScaler.activeLookAndFeel, sender.Bounds, skinStyler.Skins, skinStyler.ElementName, skinStyler.ImageIndex), 0, 0)
     End Sub
@@ -252,6 +260,7 @@ Public Class frmMediaTemplate
         Debug.Print("DPIY:" & DevExpress.XtraBars.DPISettings.DpiY)
         Debug.Print("ScaleFactor" & currentScaleFactor)
         Debug.Print("GridScaleFactor:" & Grid1.ScaleFactor.Width)
+        Debug.Print("Form Width: {0}, Form Height: {1}, Panel Width: {2}", Me.Width, Me.Height, PanelLeft.Width)
     End Sub
 
     Private Sub ButtonRPH_L_Click(sender As Object, e As EventArgs) Handles ButtonRPH_L.Click
@@ -283,4 +292,27 @@ Public Class frmMediaTemplate
     End Sub
 
 #End Region
+
+Private Sub Responsive
+    Dim x As Integer = Me.Width / currentScaleFactor
+    Dim y As Integer = Me.Height / currentScaleFactor
+    Select Case x
+        Case < 800
+            If PanelLeft.Visible Then PanelLeft.Hide
+            If PanelRight.Visible Then PanelRight.Hide
+        Case < 1150
+            If PanelLeft.Visible Then PanelLeft.Hide
+            If Not PanelRight.Visible Then PanelRight.Show
+        Case Else
+            If Not PanelRight.Visible Then PanelRight.Show
+            If Not PanelLeft.Visible Then PanelLeft.Show
+            
+        
+    End Select
+
+End Sub
+
+    Private Sub frmMediaTemplate_ResizeEnd(sender As Object, e As EventArgs) Handles Me.ResizeEnd
+        Responsive
+    End Sub
 End Class
