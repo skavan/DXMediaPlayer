@@ -209,6 +209,20 @@ Module DXUtilities
         panel.ContentImage = image
     End Sub
 
+    '// Paint Text at a specified angle
+    Public Sub PaintTextAtAngle(control As Control, g As Graphics, font As Font, angle As Integer, lbl As String, alignment As Alignment)
+        Dim format As New StringFormat
+        format.Alignment = alignment
+        format.LineAlignment = alignment
+        g.TranslateTransform(control.Width/2,control.Height/2)
+        g.RotateTransform(angle)
+        Dim sz As SizeF = g.MeasureString(lbl, font)
+        Dim x = (control.Width-sz.Height)/2
+        Dim y = (control.Height/2) - (sz.Width/2)
+        g.DrawString(lbl, DevExpress.Utils.AppearanceObject.DefaultFont, New SolidBrush(control.ForeColor), -sz.Width/2, -sz.Height/2)
+        g.ResetTransform
+    End Sub
+
 #End Region
 
 #Region "TileView Specific"

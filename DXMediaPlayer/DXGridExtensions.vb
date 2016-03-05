@@ -133,21 +133,7 @@ Public Class MyTileView
         Return tileItemElement
     End Function
 
-    Public Function SpringTileItemElementWidthX(column As TileViewColumn, includeContextButtons As Boolean) As TileItemElement
-        If Me.TileTemplate Is Nothing Or column.View Is Nothing Then Return Nothing
-        Dim tileItemElement As TileItemElement = Me.TileTemplate(column.AbsoluteIndex)
-        Dim w As Single = Me.ViewRect.Width - tileItemElement.TextLocation.X - Me.OptionsTiles.Padding.Right
-        Dim cbOffset As Single=0
-        If includeContextButtons Then
-            For Each cBtn As DevExpress.Utils.ContextButton In Me.ContextButtons
-                cbOffset += (cBtn.Glyph.Width*1.5) + cBtn.Padding.Horizontal + 6
-            Next
-        End If
-        tileItemElement.Width =  ((w-cbOffset)/Me.GridControl.ScaleFactor.Width) 
-        Return tileItemElement
-    End Function
-
-    '// set the tileviewitems to the size they need to be to horizonatllay fill the grid/tileview they live in.
+ '// set the tileviewitems to the size they need to be to horizonatllay fill the grid/tileview they live in.
     Public Function SetHScaledTileViewItemSize(unScaledHeight As Single) As SizeF
         Dim sizeF As SizeF = GetHScaledTileViewItemSize(unScaledHeight)
         Me.OptionsTiles.ItemSize = sizeF.ToSize

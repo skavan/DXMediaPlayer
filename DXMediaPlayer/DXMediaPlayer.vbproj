@@ -118,6 +118,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Program.vb" />
+    <Compile Include="TraceLogger.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DXGridExtensions.resx">
@@ -156,6 +157,15 @@
     <None Include="Resources\ShortAlbumTrackList.XML" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Stop Filled-64.png" />
+    <None Include="Resources\Skip to Start Filled-64.png" />
+    <None Include="Resources\Shuffle Filled-64.png" />
+    <None Include="Resources\Rewind Filled-64.png" />
+    <None Include="Resources\Repeat Filled-64.png" />
+    <None Include="Resources\Play Filled-64.png" />
+    <None Include="Resources\Pause Filled-64.png" />
+    <None Include="Resources\End Filled-64.png" />
+    <None Include="Resources\Fast Forward Filled-64.png" />
     <Content Include="Resources\Jason Derulo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

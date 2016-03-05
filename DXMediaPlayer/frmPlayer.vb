@@ -12,8 +12,12 @@ Public Class frmPlayer
         LabelTPH_L.Text = "Sonos Media Player"
     End Sub
 
+    Private Sub frmPlayer_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+
+    End Sub
+
 #Region "Data Handling"
-    
+
     '// get a short (no scroll bar) or long (w scrollbar) dataset
     Private Sub GetInitialDataset(isSmallDataset As Boolean)
         If isSmallDataset Then

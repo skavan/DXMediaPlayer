@@ -121,7 +121,34 @@
   <data name="AlbumTrackList" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlbumTrackList.XML;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="End_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\End Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fast_Forward_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Fast Forward Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pause_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pause Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Play_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Play Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Repeat_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Repeat Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rewind_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Rewind Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ShortAlbumTrackList" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ShortAlbumTrackList.XML;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Shuffle_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Shuffle Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Skip_to_Start_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Skip to Start Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Stop Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

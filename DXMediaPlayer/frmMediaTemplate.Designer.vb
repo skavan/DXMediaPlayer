@@ -22,6 +22,7 @@ Partial Class frmMediaTemplate
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim ContextButton1 As DevExpress.Utils.ContextButton = New DevExpress.Utils.ContextButton()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediaTemplate))
         Dim ContextButton2 As DevExpress.Utils.ContextButton = New DevExpress.Utils.ContextButton()
@@ -30,7 +31,7 @@ Partial Class frmMediaTemplate
         Me.colArt = New DevExpress.XtraGrid.Columns.TileViewColumn()
         Me.colTitle = New DevExpress.XtraGrid.Columns.TileViewColumn()
         Me.FormAssistant1 = New DevExpress.XtraBars.FormAssistant()
-        Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel()
+        Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
         Me.PanelTop = New DevExpress.XtraEditors.PanelControl()
         Me.LabelTPH_L = New DevExpress.XtraEditors.LabelControl()
         Me.PanelLeft = New DevExpress.XtraEditors.PanelControl()
@@ -68,7 +69,8 @@ Partial Class frmMediaTemplate
         Me.ButtonRPH_R = New DevExpress.XtraEditors.SimpleButton()
         Me.ButtonRPH_L = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelCenter = New DevExpress.XtraEditors.PanelControl()
-        Me.WindowsUIButtonPanel1 = New DevExpress.XtraBars.Docking2010.WindowsUIButtonPanel()
+        Me.PanelCenterBody = New DevExpress.XtraEditors.PanelControl()
+        Me.ButtonsTransport = New DevExpress.XtraBars.Docking2010.WindowsUIButtonPanel()
         Me.LabelControl5 = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl4 = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl3 = New DevExpress.XtraEditors.LabelControl()
@@ -83,9 +85,9 @@ Partial Class frmMediaTemplate
         Me.ButtonCPH_R = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelRightMin = New DevExpress.XtraEditors.PanelControl()
         Me.LabelRightMin = New DevExpress.XtraEditors.LabelControl()
-        Me.SBtnQExpand = New DevExpress.XtraEditors.SimpleButton()
+        Me.ButtonRMinH_T = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelLeftMin = New DevExpress.XtraEditors.PanelControl()
-        Me.SimpleButton6 = New DevExpress.XtraEditors.SimpleButton()
+        Me.ButtonLMinH_T = New DevExpress.XtraEditors.SimpleButton()
         CType(Me.PanelTop,System.ComponentModel.ISupportInitialize).BeginInit
         Me.PanelTop.SuspendLayout
         CType(Me.PanelLeft,System.ComponentModel.ISupportInitialize).BeginInit
@@ -113,6 +115,8 @@ Partial Class frmMediaTemplate
         Me.PanelRightHeader.SuspendLayout
         CType(Me.PanelCenter,System.ComponentModel.ISupportInitialize).BeginInit
         Me.PanelCenter.SuspendLayout
+        CType(Me.PanelCenterBody,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.PanelCenterBody.SuspendLayout
         CType(Me.PE1.Properties,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.PanelCenterFooter,System.ComponentModel.ISupportInitialize).BeginInit
         Me.PanelCenterFooter.SuspendLayout
@@ -183,7 +187,6 @@ Partial Class frmMediaTemplate
         Me.PanelLeft.Location = New System.Drawing.Point(0, 76)
         Me.PanelLeft.MinimumSize = New System.Drawing.Size(300, 0)
         Me.PanelLeft.Name = "PanelLeft"
-        Me.PanelLeft.Padding = New System.Windows.Forms.Padding(0, 0, 0, 6)
         Me.PanelLeft.Size = New System.Drawing.Size(468, 688)
         Me.PanelLeft.TabIndex = 2
         Me.PanelLeft.Tag = "0"
@@ -195,7 +198,7 @@ Partial Class frmMediaTemplate
         Me.Grid1.MainView = Me.TileView1
         Me.Grid1.Name = "Grid1"
         Me.Grid1.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemImageEdit1})
-        Me.Grid1.Size = New System.Drawing.Size(462, 504)
+        Me.Grid1.Size = New System.Drawing.Size(462, 510)
         Me.Grid1.TabIndex = 3
         Me.Grid1.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.TileView1})
         '
@@ -237,7 +240,7 @@ Partial Class frmMediaTemplate
         TileViewItemElement2.Column = Me.colTitle
         TileViewItemElement2.Text = "colTitle"
         TileViewItemElement2.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
-        TileViewItemElement2.TextLocation = New System.Drawing.Point(54, 0)
+        TileViewItemElement2.TextLocation = New System.Drawing.Point(56, -1)
         TileViewItemElement2.Width = 200
         Me.TileView1.TileTemplate.Add(TileViewItemElement1)
         Me.TileView1.TileTemplate.Add(TileViewItemElement2)
@@ -254,7 +257,7 @@ Partial Class frmMediaTemplate
         Me.PanelLeftFooter.Controls.Add(Me.SimpleButton1)
         Me.PanelLeftFooter.Controls.Add(Me.SimpleButton2)
         Me.PanelLeftFooter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.PanelLeftFooter.Location = New System.Drawing.Point(3, 625)
+        Me.PanelLeftFooter.Location = New System.Drawing.Point(3, 631)
         Me.PanelLeftFooter.Name = "PanelLeftFooter"
         Me.PanelLeftFooter.Size = New System.Drawing.Size(462, 54)
         Me.PanelLeftFooter.TabIndex = 4
@@ -282,7 +285,7 @@ Partial Class frmMediaTemplate
         Me.SimpleButton1.Location = New System.Drawing.Point(411, 3)
         Me.SimpleButton1.Margin = New System.Windows.Forms.Padding(6)
         Me.SimpleButton1.Name = "SimpleButton1"
-        Me.SimpleButton1.Padding = New System.Windows.Forms.Padding(12)
+        Me.SimpleButton1.Padding = New System.Windows.Forms.Padding(6)
         Me.SimpleButton1.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
         Me.SimpleButton1.Size = New System.Drawing.Size(48, 48)
         Me.SimpleButton1.TabIndex = 1
@@ -298,7 +301,7 @@ Partial Class frmMediaTemplate
         Me.SimpleButton2.Location = New System.Drawing.Point(3, 3)
         Me.SimpleButton2.Margin = New System.Windows.Forms.Padding(6)
         Me.SimpleButton2.Name = "SimpleButton2"
-        Me.SimpleButton2.Padding = New System.Windows.Forms.Padding(12)
+        Me.SimpleButton2.Padding = New System.Windows.Forms.Padding(6)
         Me.SimpleButton2.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
         Me.SimpleButton2.Size = New System.Drawing.Size(48, 48)
         Me.SimpleButton2.TabIndex = 0
@@ -322,12 +325,12 @@ Partial Class frmMediaTemplate
         Me.LabelXtraItem.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
         Me.LabelXtraItem.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
         Me.LabelXtraItem.AutoEllipsis = true
-        Me.LabelXtraItem.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical
+        Me.LabelXtraItem.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None
         Me.LabelXtraItem.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LabelXtraItem.Location = New System.Drawing.Point(51, 3)
         Me.LabelXtraItem.Name = "LabelXtraItem"
         Me.LabelXtraItem.Padding = New System.Windows.Forms.Padding(9, 0, 0, 3)
-        Me.LabelXtraItem.Size = New System.Drawing.Size(408, 22)
+        Me.LabelXtraItem.Size = New System.Drawing.Size(408, 58)
         Me.LabelXtraItem.TabIndex = 3
         Me.LabelXtraItem.Text = "The Sisters of Mercy>A slight case of overbombing"
         '
@@ -337,7 +340,8 @@ Partial Class frmMediaTemplate
         Me.ButtonXtraItem.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[False]
         Me.ButtonXtraItem.Appearance.BorderColor = System.Drawing.Color.Transparent
         Me.ButtonXtraItem.Appearance.Options.UseBorderColor = true
-        Me.ButtonXtraItem.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat
+        Me.ButtonXtraItem.AutoSize = true
+        Me.ButtonXtraItem.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
         Me.ButtonXtraItem.Dock = System.Windows.Forms.DockStyle.Left
         Me.ButtonXtraItem.Image = CType(resources.GetObject("ButtonXtraItem.Image"),System.Drawing.Image)
         Me.ButtonXtraItem.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
@@ -347,7 +351,7 @@ Partial Class frmMediaTemplate
         Me.ButtonXtraItem.Padding = New System.Windows.Forms.Padding(6)
         Me.ButtonXtraItem.Size = New System.Drawing.Size(48, 58)
         Me.ButtonXtraItem.TabIndex = 6
-        Me.ButtonXtraItem.Tag = ""
+        Me.ButtonXtraItem.Tag = "UsePadding"
         '
         'PanelLeftHeader
         '
@@ -383,7 +387,7 @@ Partial Class frmMediaTemplate
         Me.ButtonLPH_R.Location = New System.Drawing.Point(411, 3)
         Me.ButtonLPH_R.Margin = New System.Windows.Forms.Padding(6)
         Me.ButtonLPH_R.Name = "ButtonLPH_R"
-        Me.ButtonLPH_R.Padding = New System.Windows.Forms.Padding(12)
+        Me.ButtonLPH_R.Padding = New System.Windows.Forms.Padding(6)
         Me.ButtonLPH_R.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
         Me.ButtonLPH_R.Size = New System.Drawing.Size(48, 48)
         Me.ButtonLPH_R.TabIndex = 1
@@ -399,7 +403,7 @@ Partial Class frmMediaTemplate
         Me.ButtonLPH_L.Location = New System.Drawing.Point(3, 3)
         Me.ButtonLPH_L.Margin = New System.Windows.Forms.Padding(6)
         Me.ButtonLPH_L.Name = "ButtonLPH_L"
-        Me.ButtonLPH_L.Padding = New System.Windows.Forms.Padding(12)
+        Me.ButtonLPH_L.Padding = New System.Windows.Forms.Padding(6)
         Me.ButtonLPH_L.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
         Me.ButtonLPH_L.Size = New System.Drawing.Size(48, 48)
         Me.ButtonLPH_L.TabIndex = 0
@@ -419,7 +423,6 @@ Partial Class frmMediaTemplate
         Me.PanelRight.Location = New System.Drawing.Point(1002, 76)
         Me.PanelRight.MinimumSize = New System.Drawing.Size(250, 0)
         Me.PanelRight.Name = "PanelRight"
-        Me.PanelRight.Padding = New System.Windows.Forms.Padding(0, 0, 0, 6)
         Me.PanelRight.Size = New System.Drawing.Size(305, 688)
         Me.PanelRight.TabIndex = 2
         Me.PanelRight.Tag = "0"
@@ -430,7 +433,7 @@ Partial Class frmMediaTemplate
         Me.PanelRightFooter.Controls.Add(Me.ButtonRPF_R)
         Me.PanelRightFooter.Controls.Add(Me.ButtonRPF_L)
         Me.PanelRightFooter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.PanelRightFooter.Location = New System.Drawing.Point(3, 625)
+        Me.PanelRightFooter.Location = New System.Drawing.Point(3, 631)
         Me.PanelRightFooter.Name = "PanelRightFooter"
         Me.PanelRightFooter.Size = New System.Drawing.Size(299, 54)
         Me.PanelRightFooter.TabIndex = 8
@@ -654,32 +657,42 @@ Partial Class frmMediaTemplate
         '
         'PanelCenter
         '
-        Me.PanelCenter.Controls.Add(Me.WindowsUIButtonPanel1)
-        Me.PanelCenter.Controls.Add(Me.LabelControl5)
-        Me.PanelCenter.Controls.Add(Me.LabelControl4)
-        Me.PanelCenter.Controls.Add(Me.LabelControl3)
-        Me.PanelCenter.Controls.Add(Me.PE1)
+        Me.PanelCenter.Controls.Add(Me.PanelCenterBody)
         Me.PanelCenter.Controls.Add(Me.PanelCenterFooter)
         Me.PanelCenter.Controls.Add(Me.PanelCenterHeader)
         Me.PanelCenter.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelCenter.Location = New System.Drawing.Point(522, 76)
         Me.PanelCenter.MinimumSize = New System.Drawing.Size(350, 0)
         Me.PanelCenter.Name = "PanelCenter"
-        Me.PanelCenter.Padding = New System.Windows.Forms.Padding(0, 0, 0, 6)
         Me.PanelCenter.Size = New System.Drawing.Size(426, 688)
         Me.PanelCenter.TabIndex = 3
         '
-        'WindowsUIButtonPanel1
+        'PanelCenterBody
         '
-        Me.WindowsUIButtonPanel1.BackColor = System.Drawing.Color.Transparent
-        Me.WindowsUIButtonPanel1.Buttons.AddRange(New DevExpress.XtraEditors.ButtonPanel.IBaseButton() {New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", CType(resources.GetObject("WindowsUIButtonPanel1.Buttons"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", CType(resources.GetObject("WindowsUIButtonPanel1.Buttons1"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", CType(resources.GetObject("WindowsUIButtonPanel1.Buttons2"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", CType(resources.GetObject("WindowsUIButtonPanel1.Buttons3"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", CType(resources.GetObject("WindowsUIButtonPanel1.Buttons4"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false)})
-        Me.WindowsUIButtonPanel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.WindowsUIButtonPanel1.Location = New System.Drawing.Point(3, 481)
-        Me.WindowsUIButtonPanel1.Margin = New System.Windows.Forms.Padding(3, 12, 3, 3)
-        Me.WindowsUIButtonPanel1.Name = "WindowsUIButtonPanel1"
-        Me.WindowsUIButtonPanel1.Size = New System.Drawing.Size(420, 75)
-        Me.WindowsUIButtonPanel1.TabIndex = 13
-        Me.WindowsUIButtonPanel1.Text = "WindowsUIButtonPanel1"
+        Me.PanelCenterBody.Controls.Add(Me.ButtonsTransport)
+        Me.PanelCenterBody.Controls.Add(Me.LabelControl5)
+        Me.PanelCenterBody.Controls.Add(Me.LabelControl4)
+        Me.PanelCenterBody.Controls.Add(Me.LabelControl3)
+        Me.PanelCenterBody.Controls.Add(Me.PE1)
+        Me.PanelCenterBody.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PanelCenterBody.Location = New System.Drawing.Point(3, 57)
+        Me.PanelCenterBody.Name = "PanelCenterBody"
+        Me.PanelCenterBody.Size = New System.Drawing.Size(420, 574)
+        Me.PanelCenterBody.TabIndex = 14
+        '
+        'ButtonsTransport
+        '
+        Me.ButtonsTransport.AutoSizeInLayoutControl = false
+        Me.ButtonsTransport.BackColor = System.Drawing.Color.Transparent
+        Me.ButtonsTransport.Buttons.AddRange(New DevExpress.XtraEditors.ButtonPanel.IBaseButton() {New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", Global.MediaPlayer.My.Resources.Resources.Repeat_Filled_64, -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", Global.MediaPlayer.My.Resources.Resources.Skip_to_Start_Filled_64, -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", Global.MediaPlayer.My.Resources.Resources.Play_Filled_64, -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", Global.MediaPlayer.My.Resources.Resources.End_Filled_64, -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", Global.MediaPlayer.My.Resources.Resources.Shuffle_Filled_64, -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false)})
+        Me.ButtonsTransport.Dock = System.Windows.Forms.DockStyle.Top
+        Me.ButtonsTransport.Location = New System.Drawing.Point(3, 427)
+        Me.ButtonsTransport.Margin = New System.Windows.Forms.Padding(3, 12, 3, 3)
+        Me.ButtonsTransport.Name = "ButtonsTransport"
+        Me.ButtonsTransport.Padding = New System.Windows.Forms.Padding(18)
+        Me.ButtonsTransport.Size = New System.Drawing.Size(414, 96)
+        Me.ButtonsTransport.TabIndex = 13
+        Me.ButtonsTransport.Text = "WindowsUIButtonPanel1"
         '
         'LabelControl5
         '
@@ -689,9 +702,9 @@ Partial Class frmMediaTemplate
         Me.LabelControl5.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
         Me.LabelControl5.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None
         Me.LabelControl5.Dock = System.Windows.Forms.DockStyle.Top
-        Me.LabelControl5.Location = New System.Drawing.Point(3, 441)
+        Me.LabelControl5.Location = New System.Drawing.Point(3, 387)
         Me.LabelControl5.Name = "LabelControl5"
-        Me.LabelControl5.Size = New System.Drawing.Size(420, 40)
+        Me.LabelControl5.Size = New System.Drawing.Size(414, 40)
         Me.LabelControl5.TabIndex = 12
         Me.LabelControl5.Text = "Mirrorball"
         '
@@ -703,9 +716,9 @@ Partial Class frmMediaTemplate
         Me.LabelControl4.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
         Me.LabelControl4.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None
         Me.LabelControl4.Dock = System.Windows.Forms.DockStyle.Top
-        Me.LabelControl4.Location = New System.Drawing.Point(3, 401)
+        Me.LabelControl4.Location = New System.Drawing.Point(3, 347)
         Me.LabelControl4.Name = "LabelControl4"
-        Me.LabelControl4.Size = New System.Drawing.Size(420, 40)
+        Me.LabelControl4.Size = New System.Drawing.Size(414, 40)
         Me.LabelControl4.TabIndex = 11
         Me.LabelControl4.Text = "Sarah Machlachlan"
         '
@@ -718,9 +731,9 @@ Partial Class frmMediaTemplate
         Me.LabelControl3.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
         Me.LabelControl3.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None
         Me.LabelControl3.Dock = System.Windows.Forms.DockStyle.Top
-        Me.LabelControl3.Location = New System.Drawing.Point(3, 361)
+        Me.LabelControl3.Location = New System.Drawing.Point(3, 307)
         Me.LabelControl3.Name = "LabelControl3"
-        Me.LabelControl3.Size = New System.Drawing.Size(420, 40)
+        Me.LabelControl3.Size = New System.Drawing.Size(414, 40)
         Me.LabelControl3.TabIndex = 10
         Me.LabelControl3.Text = "I will remember you"
         '
@@ -728,15 +741,15 @@ Partial Class frmMediaTemplate
         '
         Me.PE1.Dock = System.Windows.Forms.DockStyle.Top
         Me.PE1.EditValue = CType(resources.GetObject("PE1.EditValue"),Object)
-        Me.PE1.Location = New System.Drawing.Point(3, 57)
+        Me.PE1.Location = New System.Drawing.Point(3, 3)
         Me.PE1.Name = "PE1"
         Me.PE1.Properties.Appearance.BackColor = System.Drawing.Color.Transparent
         Me.PE1.Properties.Appearance.Options.UseBackColor = true
         Me.PE1.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-        Me.PE1.Properties.Padding = New System.Windows.Forms.Padding(96, 24, 96, 0)
+        Me.PE1.Properties.Padding = New System.Windows.Forms.Padding(96, 48, 96, 0)
         Me.PE1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.[Auto]
         Me.PE1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch
-        Me.PE1.Size = New System.Drawing.Size(420, 304)
+        Me.PE1.Size = New System.Drawing.Size(414, 304)
         Me.PE1.TabIndex = 9
         '
         'PanelCenterFooter
@@ -745,7 +758,7 @@ Partial Class frmMediaTemplate
         Me.PanelCenterFooter.Controls.Add(Me.SimpleButton3)
         Me.PanelCenterFooter.Controls.Add(Me.SimpleButton5)
         Me.PanelCenterFooter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.PanelCenterFooter.Location = New System.Drawing.Point(3, 625)
+        Me.PanelCenterFooter.Location = New System.Drawing.Point(3, 631)
         Me.PanelCenterFooter.Name = "PanelCenterFooter"
         Me.PanelCenterFooter.Size = New System.Drawing.Size(420, 54)
         Me.PanelCenterFooter.TabIndex = 8
@@ -857,7 +870,7 @@ Partial Class frmMediaTemplate
         '
         Me.PanelRightMin.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple
         Me.PanelRightMin.Controls.Add(Me.LabelRightMin)
-        Me.PanelRightMin.Controls.Add(Me.SBtnQExpand)
+        Me.PanelRightMin.Controls.Add(Me.ButtonRMinH_T)
         Me.PanelRightMin.Dock = System.Windows.Forms.DockStyle.Right
         Me.PanelRightMin.Location = New System.Drawing.Point(948, 76)
         Me.PanelRightMin.MaximumSize = New System.Drawing.Size(54, 0)
@@ -879,25 +892,26 @@ Partial Class frmMediaTemplate
         Me.LabelRightMin.Size = New System.Drawing.Size(48, 631)
         Me.LabelRightMin.TabIndex = 8
         '
-        'SBtnQExpand
+        'ButtonRMinH_T
         '
-        Me.SBtnQExpand.AllowFocus = false
-        Me.SBtnQExpand.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
-        Me.SBtnQExpand.Dock = System.Windows.Forms.DockStyle.Top
-        Me.SBtnQExpand.Image = CType(resources.GetObject("SBtnQExpand.Image"),System.Drawing.Image)
-        Me.SBtnQExpand.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
-        Me.SBtnQExpand.Location = New System.Drawing.Point(3, 6)
-        Me.SBtnQExpand.MaximumSize = New System.Drawing.Size(48, 48)
-        Me.SBtnQExpand.MinimumSize = New System.Drawing.Size(48, 48)
-        Me.SBtnQExpand.Name = "SBtnQExpand"
-        Me.SBtnQExpand.Size = New System.Drawing.Size(48, 48)
-        Me.SBtnQExpand.TabIndex = 7
-        Me.SBtnQExpand.Tag = "Home"
+        Me.ButtonRMinH_T.AllowFocus = false
+        Me.ButtonRMinH_T.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
+        Me.ButtonRMinH_T.Dock = System.Windows.Forms.DockStyle.Top
+        Me.ButtonRMinH_T.Image = CType(resources.GetObject("ButtonRMinH_T.Image"),System.Drawing.Image)
+        Me.ButtonRMinH_T.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
+        Me.ButtonRMinH_T.Location = New System.Drawing.Point(3, 6)
+        Me.ButtonRMinH_T.MaximumSize = New System.Drawing.Size(48, 48)
+        Me.ButtonRMinH_T.MinimumSize = New System.Drawing.Size(48, 48)
+        Me.ButtonRMinH_T.Name = "ButtonRMinH_T"
+        Me.ButtonRMinH_T.Padding = New System.Windows.Forms.Padding(6)
+        Me.ButtonRMinH_T.Size = New System.Drawing.Size(48, 48)
+        Me.ButtonRMinH_T.TabIndex = 7
+        Me.ButtonRMinH_T.Tag = "UsePadding"
         '
         'PanelLeftMin
         '
         Me.PanelLeftMin.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple
-        Me.PanelLeftMin.Controls.Add(Me.SimpleButton6)
+        Me.PanelLeftMin.Controls.Add(Me.ButtonLMinH_T)
         Me.PanelLeftMin.Dock = System.Windows.Forms.DockStyle.Left
         Me.PanelLeftMin.Location = New System.Drawing.Point(468, 76)
         Me.PanelLeftMin.MaximumSize = New System.Drawing.Size(54, 0)
@@ -908,20 +922,21 @@ Partial Class frmMediaTemplate
         Me.PanelLeftMin.TabIndex = 19
         Me.PanelLeftMin.Visible = false
         '
-        'SimpleButton6
+        'ButtonLMinH_T
         '
-        Me.SimpleButton6.AllowFocus = false
-        Me.SimpleButton6.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
-        Me.SimpleButton6.Dock = System.Windows.Forms.DockStyle.Top
-        Me.SimpleButton6.Image = CType(resources.GetObject("SimpleButton6.Image"),System.Drawing.Image)
-        Me.SimpleButton6.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
-        Me.SimpleButton6.Location = New System.Drawing.Point(3, 6)
-        Me.SimpleButton6.MaximumSize = New System.Drawing.Size(48, 48)
-        Me.SimpleButton6.MinimumSize = New System.Drawing.Size(48, 48)
-        Me.SimpleButton6.Name = "SimpleButton6"
-        Me.SimpleButton6.Size = New System.Drawing.Size(48, 48)
-        Me.SimpleButton6.TabIndex = 7
-        Me.SimpleButton6.Tag = "Home"
+        Me.ButtonLMinH_T.AllowFocus = false
+        Me.ButtonLMinH_T.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
+        Me.ButtonLMinH_T.Dock = System.Windows.Forms.DockStyle.Top
+        Me.ButtonLMinH_T.Image = CType(resources.GetObject("ButtonLMinH_T.Image"),System.Drawing.Image)
+        Me.ButtonLMinH_T.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
+        Me.ButtonLMinH_T.Location = New System.Drawing.Point(3, 6)
+        Me.ButtonLMinH_T.MaximumSize = New System.Drawing.Size(48, 48)
+        Me.ButtonLMinH_T.MinimumSize = New System.Drawing.Size(48, 48)
+        Me.ButtonLMinH_T.Name = "ButtonLMinH_T"
+        Me.ButtonLMinH_T.Padding = New System.Windows.Forms.Padding(6)
+        Me.ButtonLMinH_T.Size = New System.Drawing.Size(48, 48)
+        Me.ButtonLMinH_T.TabIndex = 7
+        Me.ButtonLMinH_T.Tag = "UsePadding"
         '
         'frmMediaTemplate
         '
@@ -950,6 +965,7 @@ Partial Class frmMediaTemplate
         Me.PanelLeftFooter.ResumeLayout(false)
         CType(Me.PanelLeftXtraHeader,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelLeftXtraHeader.ResumeLayout(false)
+        Me.PanelLeftXtraHeader.PerformLayout
         CType(Me.PanelLeftHeader,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelLeftHeader.ResumeLayout(false)
         CType(Me.PanelRight,System.ComponentModel.ISupportInitialize).EndInit
@@ -966,6 +982,8 @@ Partial Class frmMediaTemplate
         Me.PanelRightHeader.ResumeLayout(false)
         CType(Me.PanelCenter,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelCenter.ResumeLayout(false)
+        CType(Me.PanelCenterBody,System.ComponentModel.ISupportInitialize).EndInit
+        Me.PanelCenterBody.ResumeLayout(false)
         CType(Me.PE1.Properties,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.PanelCenterFooter,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelCenterFooter.ResumeLayout(false)
@@ -1028,14 +1046,15 @@ End Sub
     Friend WithEvents LabelControl5 As DevExpress.XtraEditors.LabelControl
     Friend WithEvents LabelControl4 As DevExpress.XtraEditors.LabelControl
     Friend WithEvents LabelControl3 As DevExpress.XtraEditors.LabelControl
-    Friend WithEvents WindowsUIButtonPanel1 As DevExpress.XtraBars.Docking2010.WindowsUIButtonPanel
+    Friend WithEvents ButtonsTransport As DevExpress.XtraBars.Docking2010.WindowsUIButtonPanel
     Friend WithEvents PanelRightMin As DevExpress.XtraEditors.PanelControl
-    Friend WithEvents SBtnQExpand As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents ButtonRMinH_T As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents PanelLeftMin As DevExpress.XtraEditors.PanelControl
-    Friend WithEvents SimpleButton6 As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents ButtonLMinH_T As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents PanelRightFooter As DevExpress.XtraEditors.PanelControl
     Friend WithEvents LabelRPF_C As DevExpress.XtraEditors.LabelControl
     Friend WithEvents ButtonRPF_R As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents ButtonRPF_L As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents LabelRightMin As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents PanelCenterBody As DevExpress.XtraEditors.PanelControl
 End Class

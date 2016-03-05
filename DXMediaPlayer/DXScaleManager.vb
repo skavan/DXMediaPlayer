@@ -26,6 +26,13 @@ Class ScaleManager
         Property tag As Object
     End Class
 
+    Public Class SkinStyler
+        Property IsImage As Boolean
+        Property Skins As Object
+        Property ElementName As String
+        Property ImageIndex As Integer
+    End Class
+
 #Region "Initialization Routines"
     Public Sub New(form As XtraForm)
         activeLookAndFeel = form.LookAndFeel.ActiveLookAndFeel
@@ -43,7 +50,7 @@ Class ScaleManager
                 Case "SimpleButton", "LabelControl", "PanelControl"
                     Dim controlInfo As New ControlInfo(ctl.Name, type.Name, ctl.size, ctl.location)
                     '// and the font is manually set in the appearance section or the control has a UsePadding Tag set
-                    Debug.Print("Control Name: {0}, UseFont: {1}, Tag: {2}", ctl.Name, ctl.Appearance.Options.UseFont, ctl?.Tag)
+                    'Debug.Print("Control Name: {0}, UseFont: {1}, Tag: {2}", ctl.Name, ctl.Appearance.Options.UseFont, ctl?.Tag)
                     If ctl.Appearance.Options.UseFont Or ctl?.Tag = "UsePadding" Then
                         '// handle the font case
                         controlInfo.originalFontSize = ctl.Appearance.Font.SizeInPoints
@@ -82,6 +89,29 @@ Class ScaleManager
         Next
     End Sub
     
+    Public Sub SetPanelPaintHandlers(form As XtraForm, dic As Dictionary(Of String, SkinStyler), ByRef Func As PaintEventHandler)
+        Dim ctlList As New List(Of Control)
+        ctlList = GetControlsByType(form, "PanelControl", ctlList)
+        For each ctl In ctlList
+            If dic.ContainsKey(ctl.Name) Then
+                AddHandler ctl.Paint, Func        
+                Debug.Print ("Added Handler: " & ctl.Name)
+            End If
+        Next
+    End Sub
+
+    Private Function GetControlsByType(topControl As Control, controlType As String, ctlList As List(Of Control)) As List(Of Control)
+        For each ctl As Control In topControl.Controls
+            Dim type As System.Type = ctl.GetType
+            If type.Name = controlType Then
+                ctlList.Add(ctl)
+            End If
+                If ctl.Controls.Count > 0 Then
+                    ctlList = GetControlsByType(ctl, controlType, ctlList)
+                End If
+        Next
+        Return ctlList
+    End Function
 #End Region
     
 #Region "Font, Form and Tile Scaling"
@@ -99,11 +129,12 @@ Class ScaleManager
     End Sub
 
     '// given a basefont (the starting font size, family and style), rescale it by a factor and set all Devexpress controls to this, then process individually overridden children
-    Public Sub ScaleFonts(form As XtraForm, baseFont As Font, fontScaleFactor As Single)
+    Public Function ScaleFonts(form As XtraForm, baseFont As Font, fontScaleFactor As Single) As Font
         Dim startSize As Single = baseFont.SizeInPoints
         DevExpress.Utils.AppearanceObject.DefaultFont = New Font(basefont.FontFamily.Name, startSize * fontScaleFactor, basefont.Style)
         ScaleIndependentControls(form, fontScaleFactor)
-    End Sub
+        Return DevExpress.Utils.AppearanceObject.DefaultFont
+    End Function
 
     '// go through the dictionary, find controls that have independent font use and rescale by the scalefactor
     Public Sub ScaleIndependentControls(form As XtraForm, fontScaleFactor As Single)
