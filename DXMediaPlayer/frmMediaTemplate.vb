@@ -14,6 +14,7 @@ Public Class frmMediaTemplate
     Dim dicSkins As New Dictionary(Of String, SkinStyler)           'Just convenience, so I can manage reskinning easily
     Dim commonSkins As New DevExpress.Skins.CommonSkins
     Dim ribbonSkins As New DevExpress.Skins.RibbonSkins
+    Dim dashboardSkins As New DevExpress.Skins.DashboardSkins
     Dim AppBasefont As Font = Me.Font
     
     Dim WithEvents tileScrollBar As DevExpress.XtraGrid.Scrolling.VCrkScrollBar 'The grid/TileView scrollbar
@@ -31,6 +32,15 @@ Public Class frmMediaTemplate
         Property ImageIndex As Integer
     End Class
 
+    Enum eForceShowState
+        Normal
+        ForceShow
+        ForceHide
+    End Enum
+
+    Dim forceLeft As eForceShowState=eForceShowState.Normal
+    Dim forceRight As eForceShowState=eForceShowState.Normal
+    Dim lastFormSize As New Size(Me.Width, Me.Height)
 #End Region
 
 #Region "Form Load & Initialisation Methods"
@@ -71,10 +81,17 @@ Public Class frmMediaTemplate
         '                          .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
         dicSkins.Add(PanelCenterFooter.Name, New SkinStyler With {.IsImage = "True",
                                   .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
+        dicSkins.Add(PanelLeftMin.Name, New SkinStyler With {.IsImage = "True",
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
+        dicSkins.Add(PanelRightMin.Name, New SkinStyler With {.IsImage = "True",
+                                  .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 2})
         dicSkins.Add(PanelLeftXtraHeader.Name, New SkinStyler With {.IsImage = "True",
                                   .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 0})
         dicSkins.Add(TileView1.Name, New SkinStyler With {.IsImage = "True",
                                   .Skins = commonSkins, .ElementName = "HighlightedItem", .ImageIndex = 0})
+        dicSkins.Add(PanelCenter.Name, New SkinStyler With {.IsImage = "True",
+                                  .Skins = dashboardSkins, .ElementName = "DashboardItemBackground", .ImageIndex = 2})
+        'PanelCenter.BackColor = PE1.BackColor
         '// use this tag to flag buttons where we want to rescale the images 
         ButtonLPH_L.Tag = "UsePadding"
         ButtonLPH_R.Tag = "UsePadding"
@@ -91,7 +108,8 @@ Public Class frmMediaTemplate
     '// demonstrating overriding paint method and using a skin image 
     Private Sub PanelBackGround_Paint(sender As Object, e As PaintEventArgs) Handles PanelTop.Paint, 
             PanelLeftHeader.Paint, PanelCenterHeader.Paint, PanelRightHeader.Paint, 
-            PanelLeftFooter.Paint, PanelCenterFooter.Paint, PanelLeftXtraHeader.Paint
+            PanelLeftFooter.Paint, PanelCenterFooter.Paint, PanelLeftXtraHeader.Paint,
+            PanelLeftMin.Paint, PanelRightMin.Paint , PanelCenter.Paint
         Dim skinStyler As SkinStyler = dicSkins(sender.Name)
         e.Graphics.DrawImage(DrawButtonSkinGraphic(dxScaler.activeLookAndFeel, sender.Bounds, skinStyler.Skins, skinStyler.ElementName, skinStyler.ImageIndex), 0, 0)
     End Sub
@@ -119,27 +137,25 @@ Public Class frmMediaTemplate
     '// when the Grid is resized, change the TileViewItem Size
     Private Sub Grid1_SizeChanged(sender As Object, e As EventArgs) Handles Grid1.SizeChanged
         Dim view As MyTileView = sender.DefaultView
-        view.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height)
+        view.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height * 1.1)
     End Sub
 
     '// when the scrollbar is visibly changed, recalc the TileViewItem Size
     Private Sub tileScrollBar_VisibleChanged(sender As Object, e As EventArgs) Handles tileScrollBar.VisibleChanged
         Dim grid As MyGridControl = tileScrollBar.Parent
         Dim view As MyTileView = grid.DefaultView
-        view.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height)
+        view.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height * 1.1)
     End Sub
 
     Private Sub PanelLeft_SizeChanged(sender As Object, e As EventArgs) Handles PanelLeft.SizeChanged
         Dim tileItemElement As TileItemElement = TileView1.SpringTileItemElementWidth(colTitle, True)
         RefreshlabelText(LabelXtraItem)
-    End Sub
-
-    Private Sub PanelCenter_SizeChanged(sender As Object, e As EventArgs) Handles PanelCenter.SizeChanged
         
     End Sub
 
-    Private Sub PanelCenter_Resize(sender As Object, e As EventArgs) Handles PanelCenter.Resize
-
+    Private Sub PanelCenter_SizeChanged(sender As Object, e As EventArgs) Handles PanelCenter.SizeChanged
+        ResizeArtwork
+        
     End Sub
 
     Private Sub RefreshLabelText(ctl As LabelControl)
@@ -162,6 +178,205 @@ Public Class frmMediaTemplate
         End Select
         
     End Sub
+    Private Sub ResizeArtwork
+        Dim vPadding As Single = 12
+        Dim y As Single = PanelCenter.Height - PanelCenterHeader.Height - PanelCenterFooter.Height - 12
+        Dim picHeight As Single = (y-vPadding)/2
+        PE1.Height = picHeight
+        Dim x As Single = PanelCenter.Width
+        Dim xPad As Single = (PanelCenter.Width-picHeight) / 2
+        If xPad<0 Then xPad=0
+        PE1.Properties.Padding = New Padding(xPad,vPadding,xPad,vPadding)
+        'PE1.Refresh
+        'Debug.Print("Resized. Width: {0}, Adj Width: {1} ,Height: {2}",PE1.Width,x-picHeight,  picHeight)
+    End Sub
+
+    Private Sub ResizePanels
+        If Not Me.Visible Then Exit Sub
+        If Me.Size = lastFormSize Then Exit Sub
+        PanelLayoutSuspendResume(false)
+        'PL
+        'PL PC
+        'PL PC PR
+        'PC
+        'PC PR
+        'PR
+        Dim availWidth As Single = Me.ClientSize.Width
+        Dim plp As Single = 0.36
+        Dim pcp aS Single = 0.36
+        Dim prp As Single = 0.28
+
+        '// If either of the mini panes are shown, subtract their width from the available width
+        If PanelLeftMin.Visible Then availWidth=availWidth-PanelLeftMin.Width
+        If PanelRightMin.Visible Then availWidth=availWidth-PanelRightMin.Width
+
+        '// calculate a denominator based on the visible panels
+        Dim denom = (plp*Convert.ToInt32(PanelLeft.Visible))+
+                (pcp*Convert.ToInt32(PanelCenter.Visible))+ (prp*Convert.ToInt32(PanelRight.Visible))
+
+        Dim combo As Integer = Convert.ToInt32(PanelLeft.Visible) +
+                                (Convert.ToInt32(PanelCenter.Visible)*2) + 
+                                (Convert.ToInt32(PanelRight.Visible)*4)
+        Debug.Print("Available Width:" & availWidth)
+        Select Case availWidth
+            Case < (PanelLeft.MinimumSize.Width + PanelCenter.MinimumSize.Width)          '// show one
+                
+                    
+                    PanelRight.Hide
+                    PanelRightMin.Show
+                    PanelLeftMin.Show
+                    PanelLeft.Hide
+                    PanelCenter.Show
+
+                If forceLeft = eForceShowState.ForceShow Then
+                    PanelCenter.Hide
+                    PanelLeftMin.Hide
+                    PanelLeft.Show
+                    forceRight = eForceShowState.Normal
+                ElseIf forceRight = eForceShowState.ForceShow Then
+                    PanelCenter.Hide
+                    PanelLeftMin.Show
+                    PanelLeft.Hide
+                    PanelRight.Show
+                    PanelRightMin.Hide
+                    forceLeft = eForceShowState.Normal
+                End If
+
+
+
+                '// normally we would show center but
+                '// if forceL then c=0, r=0
+                '// if forceR then c=0, L=0
+                '// if forceL and forceR then forceR off and c=0 l=0
+            Case (PanelLeft.MinimumSize.Width + PanelCenter.MinimumSize.Width) To (PanelLeft.MinimumSize.Width + PanelCenter.MinimumSize.Width + PanelRight.MinimumSize.Width - 1)         '// show two
+                
+                    PanelRight.Hide
+                    PanelRightMin.Show
+                    PanelLeftMin.Hide
+                    PanelLeft.Show
+                    PanelCenter.Show
+                
+                    If forceLeft = forceRight = eForceShowState.ForceShow Then
+                        PanelCenter.Hide
+                        PanelLeftMin.Hide
+                        PanelLeft.Show
+                        PanelRight.Show
+                        PanelRightMin.Hide
+                    ElseIf forceRight=eForceShowState.ForceShow Or forceLeft= eForceShowState.ForceHide Then
+                        If forceRight=eForceShowState.ForceHide And forceLeft= eForceShowState.ForceHide Then
+                            PanelRight.Hide
+                            PanelRightMin.Show
+                            PanelLeftMin.Show
+                            PanelLeft.Hide
+                            PanelCenter.Show
+                        Else
+                            PanelRight.Show
+                            PanelRightMin.Hide
+                            PanelLeftMin.Show
+                            PanelLeft.Hide
+                            PanelCenter.Show
+                            If forceLeft = eForceShowState.ForceShow Then forceLeft = eForceShowState.Normal
+                        End If
+                        
+                    End If
+                
+            Case Else
+                
+                    PanelRightMin.Hide
+                    PanelRight.Show
+                    PanelLeftMin.Hide
+                    PanelLeft.Show
+                    PanelCenter.Show
+                    If forceLeft = eForceShowState.ForceHide And forceRight = eForceShowState.ForceHide Then
+                        PanelRight.Hide
+                        PanelRightMin.Show
+                        PanelLeftMin.Show
+                        PanelLeft.Hide
+                        PanelCenter.Show
+                    ElseIf forceLeft = eForceShowState.ForceHide Then
+                        PanelRight.Show
+                        PanelRightMin.Hide
+                        PanelLeftMin.Show
+                        PanelLeft.Hide
+                        PanelCenter.Show
+                    ElseIf forceRight = eForceShowState.ForceHide
+                        PanelRight.Hide
+                        PanelRightMin.Show
+                        PanelLeftMin.Hide
+                        PanelLeft.Show
+                        PanelCenter.Show
+                    End If
+
+                '// if 3 then good
+                '// if 2 then show one subject to manual override
+                '// if 1 then show 2 -- but check for manual hide
+
+        End Select
+
+        Dim clientWidth As Single = Me.ClientSize.Width - (Convert.ToInt32(PanelLeftMin.Visible) * PanelLeftMin.Width) - (Convert.ToInt32(PanelRightMin.Visible) * PanelRightMin.Width)
+        availWidth = clientWidth
+
+        '// first calculate the center panel
+        Debug.Print("CALCULATED Width: {0}, LeftPanel #/%: {1}/{2}, RightPanel #/%: {3}, {4}, CenterPanel #/%: {5}, {6}", 
+                    clientWidth, clientWidth*plp, plp, clientWidth*prp, prp,
+                    clientWidth*pcp, pcp)
+
+        '// recalc the denominator
+        denom = (plp*Convert.ToInt32(PanelLeft.Visible))+
+                (pcp*Convert.ToInt32(PanelCenter.Visible))+ (prp*Convert.ToInt32(PanelRight.Visible))
+
+        '// now reclac the denominator so that we use relative percentages
+        availWidth = AdjustPanelWidth(PanelCenter, availWidth, pcp, denom, true)
+        Dim denom2 As Single = (plp*Convert.ToInt32(PanelLeft.Visible))+(prp*Convert.ToInt32(PanelRight.Visible))
+        availWidth = AdjustPanelWidth(PanelLeft, availWidth, plp, denom2, true)
+        denom2 = (prp*Convert.ToInt32(PanelRight.Visible))
+        availWidth = AdjustPanelWidth(PanelRight, availWidth, prp, denom2, true)
+        PanelLayoutSuspendResume(true)
+        lastFormSize = Me.Size
+        
+
+        Debug.Print("Avail Width: {0}, LeftPanel #/%: {1}/{2}, RightPanel #/%: {3}, {4}, CenterPanel #/%: {5}, {6}", 
+                    clientWidth, PanelLeft.Width, PanelLeft.Width/clientWidth, PanelRight.Width, PanelRight.Width/clientWidth,
+                    PanelCenter.Width, PanelCenter.Width/clientWidth)
+        Debug.Print("Avail Width Left: {0}, LeftPanel #/%: {1}/{2}, RightPanel #/%: {3}, {4}, CenterPanel #/%: {5}, {6}", 
+                    availWidth, PanelLeft.Width, PanelLeft.Width/clientWidth/denom, PanelRight.Width, PanelRight.Width/clientWidth/denom,
+                    PanelCenter.Width, PanelCenter.Width/clientWidth/denom)
+    End Sub
+
+    Private Function AdjustPanelWidth(panel As PanelControl, availWidth As Single, pct As single, denominator As Single, doXForm As Boolean) As Single
+        Dim panelWidth As Single = 0
+        If panel.Visible Then
+            panelWidth = availWidth * (pct/denominator)
+            If panelWidth < Panel.MinimumSize.Width Then panelWidth = panel.MinimumSize.Width
+            if doXForm Then 
+                panel.Width = panelWidth
+                Debug.Print("XFORM {0} to {1}", panel.Name, panelWidth)
+            End If
+            Return availWidth-panelWidth
+        Else
+            Return availWidth
+        End If
+
+    End Function
+
+    Private Sub PanelLayoutSuspendResume(doResume As Boolean)
+        If doResume Then
+            PanelLeft.ResumeLayout
+            PanelRight.ResumeLayout
+            PanelCenter.ResumeLayout
+            PanelLeft_SizeChanged(PanelLeft, New EventArgs)
+        Else
+            PanelCenter.SuspendLayout
+            PanelLeft.SuspendLayout
+            PanelRight.SuspendLayout
+        End If
+    End Sub
+
+    Private Function GetDesiredPictureWidth(vPadding As Single) As Single
+        Dim y As Single = PanelCenter.Height - PanelCenterHeader.Height - PanelCenterFooter.Height - 12
+        Dim picHeight As Single = (y-vPadding)/2
+        Return picHeight
+    End Function
 
     Overridable Function GetLabelText(ctl As Control) As String
         Return ""
@@ -220,11 +435,6 @@ Public Class frmMediaTemplate
     End Sub
 
 
-
-    Private Sub PanelCenter_LocationChanged(sender As Object, e As EventArgs) Handles PanelCenter.LocationChanged
-        
-    End Sub
-
 #End Region
 
 #Region "Main Demo Button Methods"
@@ -263,9 +473,7 @@ Public Class frmMediaTemplate
         Debug.Print("Form Width: {0}, Form Height: {1}, Panel Width: {2}", Me.Width, Me.Height, PanelLeft.Width)
     End Sub
 
-    Private Sub ButtonRPH_L_Click(sender As Object, e As EventArgs) Handles ButtonRPH_L.Click
-        DoScaling(-0.25)
-    End Sub
+
 
     Private Sub DoScaling(ScaleChange As Single)
         Debug.Print("================START SCALING=================")
@@ -283,36 +491,117 @@ Public Class frmMediaTemplate
         'Debug.Print("New Form x,y & Font Size[{0},{1} : {2}]", Me.Width, Me.Height, DevExpress.Utils.AppearanceObject.DefaultFont.Size)
     End Sub
 
-    Private Sub ButtonRPH_R_Click(sender As Object, e As EventArgs) Handles ButtonRPH_R.Click
-        DoScaling(+0.25)
-    End Sub
-
     Private Sub ButtonScaleTiles_Click(sender As Object, e As EventArgs) Handles ButtonScaleTiles.Click
-        TileView1.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height)
+        'TileView1.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height)
+        ResizeArtwork
     End Sub
 
 #End Region
 
-Private Sub Responsive
-    Dim x As Integer = Me.Width / currentScaleFactor
-    Dim y As Integer = Me.Height / currentScaleFactor
-    Select Case x
-        Case < 800
-            If PanelLeft.Visible Then PanelLeft.Hide
-            If PanelRight.Visible Then PanelRight.Hide
-        Case < 1150
-            If PanelLeft.Visible Then PanelLeft.Hide
-            If Not PanelRight.Visible Then PanelRight.Show
-        Case Else
-            If Not PanelRight.Visible Then PanelRight.Show
-            If Not PanelLeft.Visible Then PanelLeft.Show
-            
-        
-    End Select
-
-End Sub
-
     Private Sub frmMediaTemplate_ResizeEnd(sender As Object, e As EventArgs) Handles Me.ResizeEnd
-        Responsive
+        Debug.Print("FRM RESIZE END")
+        ResizePanels
+    End Sub
+
+    
+    Private Sub ButtonCPH_L_Click(sender As Object, e As EventArgs) Handles ButtonCPH_L.Click
+        ShowHidePanel(PanelLeft)
+    End Sub
+
+    Private Sub ButtonCPH_R_Click(sender As Object, e As EventArgs) Handles ButtonCPH_R.Click
+        ShowHidePanel(PanelRight)
+    End Sub
+
+    Private Function ShowHidePanel(panel As PanelControl) As Boolean
+        If panel.Visible Then
+            panel.Hide
+            panel.Tag = True    '//user hidden/unhidden
+            Return True
+        Else
+            panel.Show
+            panel.Tag = False
+            Return False
+        End If
+    End Function
+
+    Private Sub ButtonLPH_R_Click_1(sender As Object, e As EventArgs) Handles ButtonLPH_R.Click
+        PanelLeft.Hide
+        PanelLeftMin.Show
+        forceLeft = eForceShowState.ForceHide
+        ResizePanels
+    End Sub
+
+    Private Sub SimpleButton6_Click(sender As Object, e As EventArgs) Handles SimpleButton6.Click
+        PanelLeft.Show
+        PanelLeftMin.Hide
+        forceLeft = eForceShowState.ForceShow
+        forceRight = eForceShowState.Normal
+        ResizePanels
+    End Sub
+
+    Private Sub SBtnQExpand_Click(sender As Object, e As EventArgs) Handles SBtnQExpand.Click
+        
+        PanelRightMin.Hide
+        PanelRight.Show
+        forceRight = eForceShowState.ForceShow
+        forceLeft = eForceShowState.Normal
+        ResizePanels
+    End Sub
+
+    Private Sub ButtonRPH_L_Click(sender As Object, e As EventArgs) Handles ButtonRPH_L.Click
+        PanelRight.Hide
+        PanelRightMin.Show
+        forceRight = eForceShowState.ForceHide
+        ResizePanels
+    End Sub
+
+    Private Sub ButtonRPF_L_Click(sender As Object, e As EventArgs) Handles ButtonRPF_L.Click
+        DoScaling(-0.25)
+    End Sub
+
+    Private Sub ButtonRPF_R_Click(sender As Object, e As EventArgs) Handles ButtonRPF_R.Click
+        DoScaling(+0.25)
+    End Sub
+
+    Private Sub LabelRPH_C_Click(sender As Object, e As EventArgs) Handles LabelRPH_C.Click
+        
+    End Sub
+
+    Private Sub LabelRightMin_Click(sender As Object, e As EventArgs) Handles LabelRightMin.Click
+
+    End Sub
+
+    Private Sub LabelRightMin_Paint(sender As Object, e As PaintEventArgs) Handles LabelRightMin.Paint
+
+        PaintVerticalText2(sender, e.Graphics, 90, "PLAYER QUEUE", Alignment.Center)
+
+        
+    End Sub
+
+    Private Sub PaintVerticalText(control As Control, g As Graphics, lbl As String, alignment As Alignment)
+        Dim format As New StringFormat
+        format.Alignment = StringAlignment.Center
+        format.FormatFlags = StringFormatFlags.DirectionVertical
+        Dim sz As SizeF = g.MeasureString(lbl, Me.Font)
+        Dim x = (control.Width-sz.Height)/2
+        Dim y = (control.Height/2) - (sz.Width/2)
+        g.DrawString(lbl, DevExpress.Utils.AppearanceObject.DefaultFont, New SolidBrush(control.ForeColor), x, y, format)
+    End Sub
+
+    Private Sub PaintVerticalText2(control As Control, g As Graphics, angle As Integer, lbl As String, alignment As Alignment)
+        Dim format As New StringFormat
+        format.Alignment = alignment
+        format.LineAlignment = alignment
+        g.TranslateTransform(control.Width/2,control.Height/2)
+        g.RotateTransform(angle)
+        Dim sz As SizeF = g.MeasureString(lbl, Me.Font)
+        Dim x = (control.Width-sz.Height)/2
+        Dim y = (control.Height/2) - (sz.Width/2)
+        g.DrawString(lbl, DevExpress.Utils.AppearanceObject.DefaultFont, New SolidBrush(control.ForeColor), -sz.Width/2, -sz.Height/2)
+        g.ResetTransform
+    End Sub
+
+    Private Sub PanelLeftMin_Paint(sender As Object, e As PaintEventArgs) Handles PanelLeftMin.Paint
+        PaintVerticalText2(sender, e.Graphics, -90, "MUSIC LIBRARY", Alignment.Center)
     End Sub
 End Class

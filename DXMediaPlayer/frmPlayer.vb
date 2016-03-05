@@ -8,7 +8,7 @@ Public Class frmPlayer
     Dim shadowList As String()
 
     Private Sub frmPlayer_Load(sender As Object, e As EventArgs) Handles Me.Load
-        GetInitialDataset(false)
+        GetInitialDataset(true)
         LabelTPH_L.Text = "Sonos Media Player"
     End Sub
 
