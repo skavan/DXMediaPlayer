@@ -79,6 +79,96 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property Back_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Back_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Chevron_Down_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Chevron_Down_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Chevron_Left_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Chevron_Left_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Chevron_Right_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Chevron_Right_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Chevron_Up_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Chevron_Up_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Down_2_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Down_2_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Left_2_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Left_2_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Circled_Right_2_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Circled_Right_2_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Collapse_Arrow_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Collapse_Arrow_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property End_Filled_64() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("End_Filled_64", resourceCulture)
@@ -89,9 +179,29 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property Expand_Arrow_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Expand_Arrow_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Fast_Forward_Filled_64() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Fast_Forward_Filled_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Forward_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Forward_64", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -168,6 +278,46 @@ Namespace My.Resources
         Friend ReadOnly Property Skip_to_Start_Filled_64() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Skip_to_Start_Filled_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Sort_Down_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Sort_Down_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Sort_Left_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Sort_Left_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Sort_Right_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Sort_Right_64", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Sort_Up_64() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Sort_Up_64", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

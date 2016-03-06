@@ -8,7 +8,7 @@ Public Class frmPlayer
     Dim shadowList As String()
 
     Private Sub frmPlayer_Load(sender As Object, e As EventArgs) Handles Me.Load
-        GetInitialDataset(true)
+        GetInitialDataset(false)
         LabelTPH_L.Text = "Sonos Media Player"
     End Sub
 
@@ -33,17 +33,21 @@ Public Class frmPlayer
         Grid1.DataSource = shadowList
     End Sub
 
-    '// the main method to fill in the TileView1 Tiles
-    Private Sub TileView1_CustomUnboundColumnData(sender As Object, e As CustomColumnDataEventArgs) Handles TileView1.CustomUnboundColumnData
-        If e.IsGetData Then
-            Select Case e.Column.Name
-                Case "colArt"
-                    e.Value = data(e.Row.ToString).ArtWork
-                Case "colTitle"
-                    e.Value = data(e.Row.ToString).Title
-            End Select
-        End If
-    End Sub
+    Public Overrides Function GetLibraryData(colName As String, rowIndex As Integer) As Object
+        'Return MyBase.GetLibraryData(colName)
+        If data Is Nothing Then Return ""
+        Select Case colName
+            Case "colArt"
+                Return data.Values(rowIndex).ArtWork
+            Case "colTitle"
+                Return data.Values(rowIndex).Title
+            Case "colLine2"
+                'e.Value = "<color=ActiveCaption>" & data(e.Row.ToString).Album & "</color>"
+                Return data.Values(rowIndex).Album & "|" & data.Values(rowIndex).Artist
+            Case Else
+                Return ""
+        End Select
+    End Function
 
     Overrides Function GetLabelText(ctl As Control) As String
         Select Case ctl.Name

@@ -79,6 +79,7 @@ Public Class MyTileView
     Public Property HotTrackRow As Integer = GridControl.InvalidRowHandle
 
     Public Function GetTileViewItem(rowHandle) As TileViewItem
+        If Me.DataRowCount=0 Then Return Nothing
         Return TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore).VisibleItems(rowHandle)
     End Function
 
@@ -120,6 +121,9 @@ Public Class MyTileView
         If item Is Nothing Then Return Nothing
         Dim itemInfo As TileViewItemInfo = item.ItemInfo 
         Dim xPos1 As Single = tileItemElement.TextLocation.X        'The start pos
+        If tileItemElement.AnchorElement IsNot Nothing Then
+            xPos1 = tileItemElement.AnchorElement.TextLocation.X + tileItemElement.AnchorOffset.X
+        End If
         Dim xpos2 As Single = Me.OptionsTiles.ItemSize.Width
         For Each ciViewInfo As ContextItemViewInfo In itemInfo.ContextButtonsInfo.Items
             If ciViewInfo.Item.Visibility=ContextItemVisibility.Visible Then        'Only if its visible
@@ -208,5 +212,31 @@ Public Class MyTileViewInfoCore
             Return mbw
         End Get
     End Property
+End Class
+
+Public Class MyMenuRenderer
+	Inherits ToolStripProfessionalRenderer
+
+    Property BackColor As Color = SystemColors.MenuBar
+    Property HighlightBackColor As Color = SystemColors.MenuHighlight
+    Property ForeColor As Color = DXSystemColors.MenuText
+    Property HighlightForeColor As Color = DXSystemColors.HighlightText
+'    Event PaintMenuItem(e As ToolStripItemRenderEventArgs)
+
+ '   Protected Overrides Sub OnRenderMenuItemBackground(e As ToolStripItemRenderEventArgs)
+ '       Dim myBrush As SolidBrush
+	'	If Not e.Item.Selected Then
+	'		Dim rc As New Rectangle(Point.Empty, e.Item.Size)
+ '           myBrush = New SolidBrush(BackColor)
+                
+	'		e.Graphics.FillRectangle(myBrush, rc)
+	'		e.Graphics.DrawRectangle(New Pen(BackColor), 1, 0, rc.Width - 2, rc.Height - 1)
+	'	Else
+	'		Dim rc As New Rectangle(Point.Empty, e.Item.Size)
+ '           myBrush = New SolidBrush(HighlightBackColor)
+	'		e.Graphics.FillRectangle(mybrush, rc)
+	'		e.Graphics.DrawRectangle(New Pen(HighlightBackColor), 1, 0, rc.Width - 2, rc.Height - 1)
+	'	End If
+	'End Sub
 End Class
 End Namespace

@@ -32,6 +32,7 @@ Public Module TraceLogger
 
     '// tracing is off.
         If MyTraceCategory=eTraceCategories.None Then Exit Sub      
+        Dim st As New StackTrace()
 
         '// if the flag is set.
         If MyTraceCategory Or category Then
@@ -39,7 +40,7 @@ Public Module TraceLogger
                 If VerboseMode Then
                         Trace.WriteLine(String.Format("{5}|{0}: {1}, category={2}, file={3}, line={4}",method, message, category,sourcefilePath,sourceLineNumber, Thread.CurrentThread.ManagedThreadId))
                     Else
-                        Trace.WriteLine(String.Format("{5}|{0}: {1}, category={2}, line={4}",method, message, category,sourcefilePath,sourceLineNumber, Thread.CurrentThread.ManagedThreadId))
+                        Trace.WriteLine(String.Format("{5}|{0} from {3} : {1}, category={2}, line={4}",method, message, category,st.GetFrame(2).GetMethod.Name,sourceLineNumber, Thread.CurrentThread.ManagedThreadId))
                 End If
                 
                 'Trace.WriteLine(String.Format("{0}:{1} from {2} in file {3} at line number {4}", category, message, method, sourcefilePath, sourceLineNumber))

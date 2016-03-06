@@ -121,11 +121,44 @@
   <data name="AlbumTrackList" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlbumTrackList.XML;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="Back_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Back-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Chevron_Down_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Chevron Down-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Chevron_Left_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Chevron Left-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Chevron_Right_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Chevron Right-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Chevron_Up_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Chevron Up-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Down_2_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Down 2-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Left_2_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Left 2-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Circled_Right_2_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Circled Right 2-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapse_Arrow_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapse Arrow-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="End_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\End Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Expand_Arrow_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Expand Arrow-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Fast_Forward_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Fast Forward Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Forward_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Forward-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Pause_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pause Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -147,6 +180,18 @@
   </data>
   <data name="Skip_to_Start_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Skip to Start Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sort_Down_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sort Down-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sort_Left_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sort Left-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sort_Right_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sort Right-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sort_Up_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sort Up-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Stop_Filled_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Stop Filled-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

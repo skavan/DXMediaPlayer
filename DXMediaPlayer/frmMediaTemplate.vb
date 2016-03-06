@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.InteropServices
 Imports DevExpress.MyExtensions
+Imports DevExpress.Skins
 Imports DevExpress.Utils
 Imports DevExpress.XtraBars.Docking2010
 Imports DevExpress.XtraEditors
@@ -39,6 +40,17 @@ Public Class frmMediaTemplate
         ForceShow
         ForceHide
     End Enum
+
+    Public Enum eTileStyle
+        SingleLine
+        SingleLineNoArt
+        MultiLineFull
+        MultiLineBasic
+        MultiLineNoArt
+    End Enum
+
+    Dim libraryTileStyle As eTileStyle = eTileStyle.MultiLineFull
+
     Dim forceLeft As eForceShowState=eForceShowState.Normal
     Dim forceRight As eForceShowState=eForceShowState.Normal
 
@@ -47,6 +59,13 @@ Public Class frmMediaTemplate
 
     Const TILEITEMHEIGHT = 64
     
+    Dim TVIE_colArt As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
+    Dim TVIE_colTitle As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
+    Dim TVIE_colLine2 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
+
+    Dim WithEvents cMenu As New ContextMenuStrip
+    Dim WithEvents menuRenderer As New MyMenuRenderer
+
 #End Region
 
 #Region "Form Load & Initialisation Methods"
@@ -55,6 +74,19 @@ Public Class frmMediaTemplate
     Private Sub frmMediaTemplate_Load(sender As Object, e As EventArgs) Handles Me.Load
         
         Me.Visible = False
+
+        TVIE_colArt = Me.TileView1.TileTemplate.Item(0)                        
+        TVIE_colTitle = Me.TileView1.TileTemplate.Item(1)
+        TVIE_colLine2 = Me.TileView1.TileTemplate.Item(2)
+        
+        
+        cMenu.Name = "LeftPopupMenu"
+        cMenu.Renderer = menuRenderer
+        cMenu.Items.Clear
+        cMenu.LayoutStyle = ToolStripLayoutStyle.Table
+
+        BuildMenu
+
         ClearImmediateWindow
         LogMeTraceLevel(TraceLevel.Info, eTraceCategories.All)
         VerboseMode = False
@@ -67,8 +99,7 @@ Public Class frmMediaTemplate
         dxScaler = New ScaleManager(Me)
         SetSkinStylingOverrides
         dxScaler.SetPanelPaintHandlers(Me, dicSkins, AddressOf PanelBackGround_Paint)
-        
-        tileScrollBar_Left = TileView1.VScrollBar            '// uses MyTileView, otherwise have to peek inside the Grid or the TileView
+        AddHandler cMenu.Paint, AddressOf PanelBackGround_Paint
         Me.Visible=True
         
     End Sub
@@ -107,11 +138,17 @@ Public Class frmMediaTemplate
         'dicSkins.Add(PanelLeftXtraHeader.Name, New ScaleManager.SkinStyler With {.IsImage = "True",
         '                          .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 0})
         'dicSkins.Add(PanelCenterBody.Name, New ScaleManager.SkinStyler With {.IsImage = "True",
-        '                          .Skins = dashboardSkins, .ElementName = "DashboardItemBackground", .ImageIndex =0})
+        '                          .Skins = dashboardSkins, .ElementName = "DashboardItemBackground", .ImageIndex = 4})
+        'dicSkins.Add(PanelCenterBody.Name, New ScaleManager.SkinStyler With {.IsImage = "True",
+        '                          .Skins = commonSkins, .ElementName = "Button", .ImageIndex = 4})
+        dicSkins.Add(PanelCenterBody.Name, New ScaleManager.SkinStyler With {.IsImage = "True",
+                                  .Skins = ribbonSkins, .ElementName = "ContextTabCategory", .ImageIndex = 0})
         dicSkins.Add(TileView1.Name, New ScaleManager.SkinStyler With {.IsImage = "True",
                                   .Skins = commonSkins, .ElementName = "HighlightedItem", .ImageIndex = 0})
-
-
+        dicSkins.Add(cMenu.Name & "Highlighted", New ScaleManager.SkinStyler With {.IsImage = "True",
+                                  .Skins = commonSkins, .ElementName = "LayoutItemBackground", .ImageIndex = 2})
+        dicSkins.Add(cMenu.Name, New ScaleManager.SkinStyler With {.IsImage = "True",
+                                  .Skins = commonSkins, .ElementName = "LayoutItemBackground", .ImageIndex = 1})
 
         '// use this tag to flag buttons where we want to rescale the images 
         ButtonLPH_L.Tag = "UsePadding"
@@ -129,6 +166,12 @@ Public Class frmMediaTemplate
 #End Region
 
 #Region "Control/Form Painting and Resizing"
+    '// the core triggers to force resizing or repainting are:
+    '// --- the form resize event (could be moved to the resize end event if we liked)
+    '// --- the datasourcechanged event (which triggers grid styling)
+    '// --- the form scale up and scale down buttons
+    '// --- the panel force hide and force show buttons
+    '// --- the vertical scroll bar Visible Changed Event
 
     '// when the form resizes, resize the panels
     Private Sub frmMediaTemplate_Resize(sender As Object, e As EventArgs) Handles Me.Resize
@@ -140,25 +183,18 @@ Public Class frmMediaTemplate
 
     '// when the Grid is resized, change the TileViewItem Size
     Private Sub Grid1_SizeChanged(sender As Object, e As EventArgs) Handles Grid1.SizeChanged
-        LogMe(eTraceCategories.Gui,"Grid Size_Changed", TraceLevel.Info)
         '// no longer used. handled by form resize or panel resize       
-    End Sub
-
-
-    Private Sub frmMediaTemplate_ResizeBegin(sender As Object, e As EventArgs) Handles Me.ResizeBegin
-
-    End Sub
-
-    Private Sub frmMediaTemplate_ResizeEnd(sender As Object, e As EventArgs) Handles Me.ResizeEnd
-
+        '// LogMe(eTraceCategories.Gui,"Grid Size_Changed", TraceLevel.Info)
     End Sub
 
     '// when the scrollbar is visibly changed, recalc the TileViewItem Size
     Private Sub tileScrollBar_Left_VisibleChanged(sender As Object, e As EventArgs) Handles tileScrollBar_Left.VisibleChanged
+        '// for some reason this event triggers all the blinking time, even when the parent control is hidden!
+        '// this next line is to trap for and optimize for that.
+        If PanelLeft.Visible = False Then Exit Sub
+        LogMe(eTraceCategories.Gui,"vScrollBarChanged: " & tileScrollBar_Left.Visible & "<**>" & PanelLeft.Visible, TraceLevel.Info)
         TidyUpGridElements
-        'Dim grid As MyGridControl = tileScrollBar_Left.Parent
-        'Dim view As MyTileView = grid.DefaultView
-        'view.SetHScaledTileViewItemSize(TILEITEMHEIGHT)
+        
     End Sub
 
     '// demonstrating overriding paint method and using a skin image 
@@ -466,6 +502,11 @@ Public Class frmMediaTemplate
         Return ""
     End Function
 
+    Overridable Function GetLibraryData(colName As String, rowIndex As Integer) As Object
+        Return ""
+    End Function
+
+
 #End Region
 
 #Region "Important Supporting Methods"    
@@ -480,13 +521,16 @@ Public Class frmMediaTemplate
         If desiredScaleFactor < 0.5 Then desiredScaleFactor = 0.5
         If desiredScaleFactor > 2 Then desiredScaleFactor = 2
         Me.Hide
-        'Me.SuspendLayout
+        '// some odd bug that causes the visible change event to be fired umpteen times needs to be worked around by detaching and then reattaching the scrollbar
+        tileScrollBar_Left = Nothing
         currentScaleFactor = dxScaler.ScaleForm(Me, desiredScaleFactor, currentScaleFactor)
         dxScaler.ScaleFonts(Me, appBaseFont, currentScaleFactor)
         ResizePanels(True)
+        tileScrollBar_Left = TileView1.VScrollBar
         Me.Show
         
-        'Me.ResumeLayout
+        SetTileStyle(TileView1, libraryTileStyle)
+        
     End Sub
 
     '// calculates panel 
@@ -543,7 +587,8 @@ Public Class frmMediaTemplate
     Private Sub TidyUpGridElements
         LogMe(eTraceCategories.Gui,"TIDY UP GRID", TraceLevel.Info)      
         TileView1.SetHScaledTileViewItemSize(TILEITEMHEIGHT * currentScaleFactor)
-        Dim tileItemElement As TileItemElement = TileView1.SpringTileItemElementWidth(colTitle, True)
+        TileView1.SpringTileItemElementWidth(colTitle, True)
+        TileView1.SpringTileItemElementWidth(colLine2, True)
         RefreshlabelText(LabelXtraItem)     
     End Sub
 
@@ -584,15 +629,184 @@ Public Class frmMediaTemplate
     End Sub
 
     Private Sub ClearImmediateWindow
-        
         Dim dte = Marshal.GetActiveObject("VisualStudio.DTE.14.0")
-        dte.Windows.Item("Immediate Window").Activate() 'Activate Immediate Window  
-        dte.ExecuteCommand("Edit.SelectAll")
-        dte.ExecuteCommand("Edit.ClearAll")
+        Try
+            dte.Windows.Item("Immediate Window").Activate() 'Activate Immediate Window  
+            dte.ExecuteCommand("Edit.SelectAll")
+            dte.ExecuteCommand("Edit.ClearAll")
+        Catch ex As Exception
+
+        End Try
         Marshal.ReleaseComObject(dte)
     End Sub
 
 #End Region
 
+        '// the main method to fill in the TileView1 Tiles
+    Private Sub TileView1_CustomUnboundColumnData(sender As Object, e As CustomColumnDataEventArgs) Handles TileView1.CustomUnboundColumnData
+        If e.IsGetData Then
+            Dim value As Object = GetLibraryData(e.Column.Name, e.ListSourceRowIndex)
+            Select Case e.Column.Name
+                Case "colArt"
+                    e.Value = value 
+                Case "colTitle"
+                    e.Value = "<color=HighlightText>" & value & "</color>"
+                Case "colLine2"
+                    Dim strVal As String = value
+                    If strVal.Contains("|") Then
+                        Dim part1 As String = strVal.Split("|")(0) 
+                        Dim part2 As String = "<color=ActiveCaption>" & strVal.Split("|")(1) & "</color>"
+                        e.Value = part2 & ", " & part1
+                    Else
+                        e.Value = value
+                    End If
+            End Select
+        End If
+    End Sub
 
+    Private Function SetTileStyle(tileView As TileView, tileStyle As eTileStyle) As eTileStyle
+        If tileView.DataSource Is Nothing Then Return tilestyle
+        
+        Dim artScaleFactor = currentScaleFactor * (currentScaleFactor / Grid1.ScaleFactor.Width)
+        Dim availHeight = TileView1.GetTileViewItem(0).ItemInfo.ContentBounds.Height / Grid1.ScaleFactor.Width
+        LogMe(eTraceCategories.Gui, "SetTileStyle:" & Grid1.ScaleFactor.Width & " availHeight:" & availheight, TraceLevel.Info)
+        '// My crazy formula to get the spacing right!
+        Dim vOffset1 = ((FontHelper.GetCellAscent(Me.Font)+ FontHelper.GetCellDescent(Me.Font)) * currentScaleFactor)
+        Dim vOffset2 = (FontHelper.GetCellDescent(Me.Font)*2) * currentScaleFactor
+        
+        TVIE_colArt.ImageSize = New Size(availHeight, availHeight)
+        Dim hOffset1 = TVIE_colArt.ImageSize.Width + 8
+        Dim hOffset2 = 8
+        Select Case tileStyle
+            Case eTileStyle.SingleLine
+                colLine2.Visible = False
+                colTitle.Visible = True
+                colArt.Visible = True
+                TVIE_colTitle.TextLocation = New Point(hOffset1, -1)
+            Case eTileStyle.SingleLineNoArt
+                colLine2.Visible = False
+                colTitle.Visible = True
+                colArt.Visible = False
+                TVIE_colTitle.TextLocation = New Point(hOffset2, -1)
+            Case eTileStyle.MultiLineBasic
+            Case eTileStyle.MultiLineFull
+                colLine2.Visible = True
+                colTitle.Visible = True
+                colArt.Visible = True
+                TVIE_colTitle.TextLocation = New Point(hOffset1, -vOffset1)
+                TVIE_colLine2.AnchorOffset = New Point(0, -vOffset2)
+            Case eTileStyle.MultiLineNoArt
+                colLine2.Visible = True
+                colTitle.Visible = True
+                colArt.Visible = False
+                TVIE_colTitle.TextLocation = New Point(hOffset2, -vOffset1)
+                TVIE_colLine2.AnchorOffset = New Point(0, -vOffset2)
+
+        End Select
+        availHeight = TileView1.GetTileViewItem(0).ItemInfo.ContentBounds.Height
+        Dim bigIconSize = New Size(availHeight*.75,availHeight*.75)
+        Dim smIconSize= New Size(availHeight*.5,availHeight*.5)
+        Dim adjust As Single = ((bigIconSize.Height-smIconSize.Height)/2) 
+
+        Dim item = TileView1.ContextButtons.Item(0)
+        item.Size = bigIconSize
+        item.Glyph = RescaleImageByScaleFactor(My.Resources.Circled_Chevron_Right_64, bigIconSize)
+        item = TileView1.ContextButtons.Item(1)
+        item.Size = smIconSize
+        item.Glyph = RescaleImageByScaleFactor(My.Resources.Sort_Down_64, smIconSize)
+        item.AnchorOffset = New Point(0, adjust)
+
+
+        TileView1.SpringTileItemElementWidth(colTitle, True)
+        TileView1.SpringTileItemElementWidth(colLine2, True)
+        Return tileStyle
+    End Function
+
+    
+    Private Sub ButtonCPH_L_Click(sender As Object, e As EventArgs) Handles ButtonCPH_L.Click
+        libraryTileStyle= SetTileStyle(TileView1, eTileStyle.SingleLine)
+        TileView1.RefreshData
+    End Sub
+
+    Private Sub ButtonCPH_R_Click(sender As Object, e As EventArgs) Handles ButtonCPH_R.Click
+        libraryTileStyle= SetTileStyle(TileView1, eTileStyle.MultiLineFull)
+        TileView1.RefreshData       
+    End Sub
+
+    Private Sub ButtonCPF_R_Click(sender As Object, e As EventArgs) Handles ButtonCPF_R.Click
+        libraryTileStyle= SetTileStyle(TileView1, eTileStyle.MultiLineNoArt)
+        TileView1.RefreshData
+    End Sub
+
+    Private Sub ButtonCPF_L_Click(sender As Object, e As EventArgs) Handles ButtonCPF_L.Click
+        libraryTileStyle= SetTileStyle(TileView1, eTileStyle.SingleLineNoArt)
+        TileView1.RefreshData
+    End Sub
+
+    Private Sub TileView1_DataSourceChanged(sender As Object, e As EventArgs) Handles TileView1.DataSourceChanged
+        If tileScrollBar_Left Is Nothing Then tileScrollBar_Left = TileView1.VScrollBar            '// uses MyTileView, otherwise have to peek inside the Grid or the TileView
+        SetTileStyle(TileView1, libraryTileStyle)
+    End Sub
+
+    Private Sub frmMediaTemplate_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
+        
+    End Sub
+
+    Private Sub ButtonLPH_L_Click(sender As Object, e As EventArgs) Handles ButtonLPH_L.Click
+
+        Dim currentSkin As DevExpress.Skins.Skin = CommonSkins.GetSkin(DefaultLookAndFeel1.LookAndFeel)
+        
+        
+        'Dim c As Color = DXSystemColors.ScrollBar
+        'Dim d As Color = color.Black 'currentSkin.TranslateColor(DXSystemColors.WindowFrame)
+        'Dim f As Color = currentSkin.TranslateColor(SystemColors.ActiveCaption)
+        'Debug.Print(c.GetBrightness)
+        'cMenu.BackColor = c
+        'cMenu.ForeColor = d
+        
+        'cMenu.Items.Clear
+        'BuildMenu
+        cMenu.Margin = New Padding(12)
+        cMenu.Padding = New Padding(12)
+        
+        cMenu.Font = LabelLPH_C.Font
+        cMenu.ShowImageMargin=False
+        cMenu.ForeColor = LabelLPH_C.ForeColor
+        'menuRenderer.BackColor = c
+        'menuRenderer.HighlightBackColor = f
+
+        cMenu.Show(sender, sender.Width, 0 )
+    End Sub
+
+    Private Sub cMenu_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles cMenu.ItemClicked
+        Debug.Print("Clicked: " & e.ClickedItem.Text)
+        
+
+        DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle(e.ClickedItem.Text)
+    End Sub
+    Private Sub BuildMenu()
+        
+        Dim skins As SkinContainerCollection = SkinManager.[Default].Skins
+        For Each s As SkinContainer In skins
+	        Dim chitem As New ToolStripMenuItem
+	        chitem.Text = s.SkinName
+            chitem.Margin = New Padding(3)
+	        'chitem.Font = AppBasefont
+	        If s.SkinName = DevExpress.LookAndFeel.UserLookAndFeel.[Default].SkinName Then
+		        chitem.Checked = True
+	        End If
+	        cMenu.Items.Add(chitem)
+        Next
+    End Sub
+
+    Private Sub menuRenderer_RenderMenuItemBackground(sender As Object, e As ToolStripItemRenderEventArgs) Handles menuRenderer.RenderMenuItemBackground
+        Dim skinStyler As ScaleManager.SkinStyler 
+        If e.Item.Selected Then
+            skinStyler = dicSkins(cMenu.Name & "Highlighted")
+        Else
+            skinStyler = dicSkins(cMenu.Name)
+        End If
+        e.Graphics.DrawImage(DrawButtonSkinGraphic(dxScaler.activeLookAndFeel,New Rectangle(0,0,e.Item.Size.Width-6, e.Item.Size.Height), skinStyler.Skins, skinStyler.ElementName, skinStyler.ImageIndex), 0, 0)
+        '
+    End Sub
 End Class

@@ -157,6 +157,10 @@
     <None Include="Resources\ShortAlbumTrackList.XML" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Sort Up-64.png" />
+    <None Include="Resources\Sort Right-64.png" />
+    <None Include="Resources\Sort Left-64.png" />
+    <None Include="Resources\Sort Down-64.png" />
     <None Include="Resources\Stop Filled-64.png" />
     <None Include="Resources\Skip to Start Filled-64.png" />
     <None Include="Resources\Shuffle Filled-64.png" />
@@ -166,6 +170,17 @@
     <None Include="Resources\Pause Filled-64.png" />
     <None Include="Resources\End Filled-64.png" />
     <None Include="Resources\Fast Forward Filled-64.png" />
+    <None Include="Resources\Back-64.png" />
+    <None Include="Resources\Circled Chevron Down-64.png" />
+    <None Include="Resources\Circled Chevron Left-64.png" />
+    <None Include="Resources\Circled Chevron Right-64.png" />
+    <None Include="Resources\Circled Chevron Up-64.png" />
+    <None Include="Resources\Circled Down 2-64.png" />
+    <None Include="Resources\Circled Left 2-64.png" />
+    <None Include="Resources\Circled Right 2-64.png" />
+    <None Include="Resources\Collapse Arrow-64.png" />
+    <None Include="Resources\Expand Arrow-64.png" />
+    <None Include="Resources\Forward-64.png" />
     <Content Include="Resources\Jason Derulo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
