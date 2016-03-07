@@ -31,6 +31,8 @@ Class ScaleManager
         Property Skins As Object
         Property ElementName As String
         Property ImageIndex As Integer
+        Property VerticalOffset As Integer=0
+        Property HorizontalOffset As Integer=0
     End Class
 
 #Region "Initialization Routines"

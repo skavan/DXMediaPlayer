@@ -78,9 +78,10 @@ Public Class MyTileView
 
     Public Property HotTrackRow As Integer = GridControl.InvalidRowHandle
 
-    Public Function GetTileViewItem(rowHandle) As TileViewItem
+    Public Function GetTileViewItem(visibleRowHandle) As TileViewItem
         If Me.DataRowCount=0 Then Return Nothing
-        Return TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore).VisibleItems(rowHandle)
+        '// the rowHandle is the visible Row Handle, not the data Row Handle
+        Return TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore).VisibleItems.Values(visibleRowHandle)
     End Function
 
     Public Sub New()
@@ -150,6 +151,7 @@ Public Class MyTileView
         '// get the first item
         If Me.RowCount=0 Then Return New Rectangle(0,0,0,0)
         Dim item As TileViewItem = GetTileViewItem(0)
+        
         Dim r As New Rectangle(item.Padding.Left, 
                                item.Padding.Right,
                                (Me.OptionsTiles.ItemSize.Width*Me.GridControl.ScaleFactor.Width )+item.Padding.Left,
@@ -214,29 +216,28 @@ Public Class MyTileViewInfoCore
     End Property
 End Class
 
-Public Class MyMenuRenderer
-	Inherits ToolStripProfessionalRenderer
+'Public Class MyMenuRenderer
+'	Inherits ToolStripProfessionalRenderer
 
-    Property BackColor As Color = SystemColors.MenuBar
-    Property HighlightBackColor As Color = SystemColors.MenuHighlight
-    Property ForeColor As Color = DXSystemColors.MenuText
-    Property HighlightForeColor As Color = DXSystemColors.HighlightText
-'    Event PaintMenuItem(e As ToolStripItemRenderEventArgs)
+'    Property BackColor As Color = SystemColors.MenuBar
+'    Property HighlightBackColor As Color = SystemColors.MenuHighlight
+'    Property ForeColor As Color = DXSystemColors.MenuText
+'    Property HighlightForeColor As Color = DXSystemColors.HighlightText
 
- '   Protected Overrides Sub OnRenderMenuItemBackground(e As ToolStripItemRenderEventArgs)
- '       Dim myBrush As SolidBrush
-	'	If Not e.Item.Selected Then
-	'		Dim rc As New Rectangle(Point.Empty, e.Item.Size)
- '           myBrush = New SolidBrush(BackColor)
+' '   Protected Overrides Sub OnRenderMenuItemBackground(e As ToolStripItemRenderEventArgs)
+' '       Dim myBrush As SolidBrush
+'	'	If Not e.Item.Selected Then
+'	'		Dim rc As New Rectangle(Point.Empty, e.Item.Size)
+' '           myBrush = New SolidBrush(BackColor)
                 
-	'		e.Graphics.FillRectangle(myBrush, rc)
-	'		e.Graphics.DrawRectangle(New Pen(BackColor), 1, 0, rc.Width - 2, rc.Height - 1)
-	'	Else
-	'		Dim rc As New Rectangle(Point.Empty, e.Item.Size)
- '           myBrush = New SolidBrush(HighlightBackColor)
-	'		e.Graphics.FillRectangle(mybrush, rc)
-	'		e.Graphics.DrawRectangle(New Pen(HighlightBackColor), 1, 0, rc.Width - 2, rc.Height - 1)
-	'	End If
-	'End Sub
-End Class
+'	'		e.Graphics.FillRectangle(myBrush, rc)
+'	'		e.Graphics.DrawRectangle(New Pen(BackColor), 1, 0, rc.Width - 2, rc.Height - 1)
+'	'	Else
+'	'		Dim rc As New Rectangle(Point.Empty, e.Item.Size)
+' '           myBrush = New SolidBrush(HighlightBackColor)
+'	'		e.Graphics.FillRectangle(mybrush, rc)
+'	'		e.Graphics.DrawRectangle(New Pen(HighlightBackColor), 1, 0, rc.Width - 2, rc.Height - 1)
+'	'	End If
+'	'End Sub
+'End Class
 End Namespace
