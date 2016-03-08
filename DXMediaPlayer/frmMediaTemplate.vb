@@ -2,6 +2,7 @@
 Imports DevExpress.MyExtensions
 Imports DevExpress.Skins
 Imports DevExpress.Utils
+Imports DevExpress.XtraBars
 Imports DevExpress.XtraBars.Docking2010
 Imports DevExpress.XtraEditors
 Imports DevExpress.XtraGrid
@@ -67,8 +68,8 @@ Public Class frmMediaTemplate
     Dim TV1_colLine2 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
 
     Dim WithEvents MenuPopup As New ContextMenuStrip
-    Dim WithEvents MenuRenderer As ToolStripProfessionalRenderer 'New MyMenuRenderer
-
+    Dim WithEvents MenuRenderer As New MyMenuRenderer 'ToolStripProfessionalRenderer 'New MyMenuRenderer
+    
 #End Region
 
 #Region "Form Load & Initialisation Methods"
@@ -85,11 +86,13 @@ Public Class frmMediaTemplate
         
         '// Setup the PopupMenu and assign my custom renderer
         MenuPopup.Name = "PopupMenu"
-        menuRenderer = MenuPopup.Renderer
+        MenuPopup.Renderer = menuRenderer
         MenuPopup.LayoutStyle = ToolStripLayoutStyle.Table
         
-        ClearImmediateWindow
+        
+        
         '// Logging and Debug
+        ClearImmediateWindow
         LogMeTraceLevel(TraceLevel.Info, eTraceCategories.All)
         VerboseMode = False
 
@@ -184,15 +187,16 @@ Public Class frmMediaTemplate
         ButtonsTopPanelRight.AppearanceButton.Hovered.ForeColor = _warningColor
         ButtonsTopPanelRight.AppearanceButton.Pressed.ForeColor = currentSkin.Colors("Control")
         ButtonsTopPanelRight.AppearanceButton.Pressed.BackColor = _infoColor
-
+        MenuRenderer.ArrowColor = currentSkin.Colors("ControlText")
     End Sub
 
     '// update menu font size and colors
-    Private Sub SkinMenu(menu As ContextMenuStrip)
+    Private Sub SkinMenu(menu As Object ) 'ContextMenuStrip
         MenuPopup.Font = LabelLPH_C.Font
         MenuPopup.ShowImageMargin=False
         MenuPopup.ForeColor =  DevExpress.Skins.CommonSkins.GetSkin(defaultLookAndFeel1.LookAndFeel).Colors("ControlText")
     End Sub
+
 #End Region
 
 #Region "Control/Form Painting and Resizing"
@@ -272,16 +276,27 @@ Public Class frmMediaTemplate
         PaintTextAtAngle(sender, e.Graphics, DevExpress.Utils.AppearanceObject.DefaultFont,  90, "PLAYER QUEUE", Alignment.Center)      
     End Sub
 
-    '// skin the popup menu through overriding the Background Paint
+    '// skin the popup menu through catching the Background Paint
     Private Sub menuRenderer_RenderMenuItemBackground(sender As Object, e As ToolStripItemRenderEventArgs) Handles MenuRenderer.RenderMenuItemBackground
         Dim skinStyler As ScaleManager.SkinStyler 
         If e.Item.Selected Then
             skinStyler = dicSkins(MenuPopup.Name & "Highlighted")
         Else
             skinStyler = dicSkins(MenuPopup.Name)
-        End If
+        End If     
         e.Graphics.DrawImage(DrawButtonSkinGraphic(scaleManager.activeLookAndFeel,New Rectangle(0,0,e.Item.Size.Width-6, e.Item.Size.Height), skinStyler.Skins, skinStyler.ElementName, skinStyler.ImageIndex), 0, 0)
-        '
+    End Sub
+
+    '// called when we need to custom paint the TileViewItem Background
+    Private Sub TileView_ItemCustomize(view As MyTileView, item As TileViewItem)
+        '// this is to handle the Hover Management. If we're hovering, set the background image. If not, set to nothing.
+        '// need to handle the crazy Grid/TileView scalefactor thing.
+        If view.HotTrackRow = item.RowHandle Then
+            Dim skinStyler As ScaleManager.SkinStyler = dicSkins(view.Name)
+            Item.BackgroundImage = DrawButtonSkinGraphic(scaleManager.activeLookAndFeel, view.GetTileViewItemBackgroundBounds, skinStyler.Skins, skinStyler.ElementName, skinStyler.ImageIndex)
+        Else
+            item.BackgroundImage=Nothing
+        End If
     End Sub
 
 #End Region
@@ -293,7 +308,8 @@ Public Class frmMediaTemplate
         If Not Me.Visible Then Exit Sub
         If (Me.Size = _lastFormSize) And Not bForceResize Then Exit Sub
         LogMe(eTraceCategories.Gui,"RESIZE PANELS", TraceLevel.Info)
-        'Me.SuspendLayout
+        
+        'Me.SuspendLayout       '// should be suspended before we get here.
         'PanelsSuspendLayout(false)
         
         '// relative sizes of each panel        
@@ -307,15 +323,13 @@ Public Class frmMediaTemplate
         If PanelLeftMin.Visible Then availWidth=availWidth-PanelLeftMin.Width
         If PanelRightMin.Visible Then availWidth=availWidth-PanelRightMin.Width
 
-        '// calculate a denominator based on the visible panels
-        Dim denom = (plp*Convert.ToInt32(PanelLeft.Visible))+
-                (pcp*Convert.ToInt32(PanelCenter.Visible))+ (prp*Convert.ToInt32(PanelRight.Visible))
-
+        '// create variables to hold the panels target visibility (so we don't keep flipping the panels visibility until we're done)
         Dim pr, prm, pl, plm, pc As Boolean
-        Dim show As Boolean = True: Dim hide As Boolean = false
+        Dim show As Boolean = True: Dim hide As Boolean = false     '// helpers for readability
 
+        '// the minimum width of the panels controls how the responsive system works.
         Select Case availWidth
-            Case < (PanelLeft.MinimumSize.Width + PanelCenter.MinimumSize.Width)          '// only room for one panel
+            Case < (PanelLeft.MinimumSize.Width + PanelCenter.MinimumSize.Width)                '// only room for one panel
                 '// set the defaults
                 pr = hide: prm = show
                 pl = hide: plm = show
@@ -378,34 +392,38 @@ Public Class frmMediaTemplate
                 End If
 
         End Select
-        'PanelCenter.SuspendLayout
+
+        'Now lets apply the visibility settings
         PanelCenter.Visible = pc
         PanelLeftMin.Visible = plm
         PanelLeft.Visible = pl
         PanelRightMin.Visible = prm
         PanelRight.Visible = pr
         
-        
+        '// Now let's calculate the available width (it might have changed because of the panel visibility toggling above)
         Dim clientWidth As Single = Me.ClientSize.Width - (Convert.ToInt32(PanelLeftMin.Visible) * PanelLeftMin.Width) - (Convert.ToInt32(PanelRightMin.Visible) * PanelRightMin.Width)
         availWidth = clientWidth
 
-        '// first calculate the center panel
+        '// calculate a denominator based on the visible panels
+        '// for example if all three main panels are visible, the denominator is 1.
+        Dim denom = (plp*Convert.ToInt32(PanelLeft.Visible))+
+                (pcp*Convert.ToInt32(PanelCenter.Visible))+ (prp*Convert.ToInt32(PanelRight.Visible)) 
         
-        '// recalc the denominator
-        denom = (plp*Convert.ToInt32(PanelLeft.Visible))+
-                (pcp*Convert.ToInt32(PanelCenter.Visible))+ (prp*Convert.ToInt32(PanelRight.Visible))
+        '// Let's start with the Center Panel.
         availWidth = AdjustPanelWidth(PanelCenter, availWidth, pcp, denom, true)
 
-        '// now recalc the denominator so that we use relative percentages
+        '// now recalc the denominator again, excluding the center panel, so that we use relative percentages
         Dim denom2 As Single = (plp*Convert.ToInt32(PanelLeft.Visible))+(prp*Convert.ToInt32(PanelRight.Visible))
         availWidth = AdjustPanelWidth(PanelLeft, availWidth, plp, denom2, true)
 
-        '// now recalc the denominator so that we use relative percentages
+        '// now recalc the denominator once more
         denom2 = (prp*Convert.ToInt32(PanelRight.Visible))
         availWidth = AdjustPanelWidth(PanelRight, availWidth, prp, denom2, true)
 
+        '// resize the artwork
         ResizeArtwork
         
+        '// capture the formsize in a global so we don't keep redundantly sizing the panels if the form size is constant!
         _lastFormSize = Me.Size
     
     End Sub 
@@ -413,14 +431,14 @@ Public Class frmMediaTemplate
 #End Region
 
 #Region "Mouse & HotTracking"
-    Private Sub TileView1_MouseMove(sender As Object, e As MouseEventArgs) Handles TileView1.MouseMove
-       
-        Dim view As MyTileView = sender
+
+    '// perform hotTracking on the TileView
+    Private Sub TileView_UpdateHotRow(view As MyTileView, e As MouseEventArgs)
         Dim info As TileViewHitInfo = view.CalcHitInfo(New Point(e.X, e.Y))
         If info.InItem Then
             Dim item = info.Item
             If Not (view.HotTrackRow = item.RowHandle) Then
-                '// new row
+                '// the row is different than the "stored" hotRow so we must have a new hotrow
                 Dim pRow As Integer = view.HotTrackRow
                 view.HotTrackRow = item.RowHandle
                 '// refresh previous to normal
@@ -433,33 +451,28 @@ Public Class frmMediaTemplate
         End If
     End Sub
 
-    Private Sub TileView1_FocusedRowChanged(sender As Object, e As FocusedRowChangedEventArgs) Handles TileView1.FocusedRowChanged
-        'Debug.Print("Prev: {0}, New: {1}", e.PrevFocusedRowHandle, e.FocusedRowHandle)
-        'TileView1.RefreshRow(e.FocusedRowHandle)
-    End Sub
-
-    Private Sub Grid1_MouseLeave(sender As Object, e As EventArgs) Handles Grid1.MouseLeave
-        Debug.Print("Mouse Left Grid")
-        '// invalidate previous hottrackrow if any once we leave the grid
-        Dim view As MyTileView = Ctype(Grid1.DefaultView,MyTileView)
+    '// invalidate the HotRow because the mouse has moved away
+    Private Sub TileView_InvalidateHotRow(view As MyTileView)
         Dim pRow As Integer = view.HotTrackRow
         view.HotTrackRow=GridControl.InvalidRowHandle
         If pRow<> GridControl.InvalidRowHandle Then TileView1.RefreshRow(pRow)
     End Sub
 
-    Private Sub TileView1_ItemCustomize(sender As Object, e As TileViewItemCustomizeEventArgs) Handles TileView1.ItemCustomize
-        'Debug.Print("TileView Customize: {0}, row: {1}", sender.GetType.Name, e.RowHandle)
-        Dim item As TileViewItem = e.Item
-        Dim view As MyTileView = e.Item.View
-        '// this is to handle the Hover Management. If we're hovering, set the background image. If not, set to nothing.
-        '// need to handle the crazy Grid/TileView scalefactor thing.
-        If view.HotTrackRow = item.RowHandle Then
-            Dim skinStyler As ScaleManager.SkinStyler = dicSkins(sender.Name)
-            Item.BackgroundImage = DrawButtonSkinGraphic(scaleManager.activeLookAndFeel, view.GetTileViewItemBackgroundBounds, skinStyler.Skins, skinStyler.ElementName, skinStyler.ImageIndex)
-        Else
-            item.BackgroundImage=Nothing
-        End If
+ Private Sub TileView1_MouseMove(sender As Object, e As MouseEventArgs) Handles TileView1.MouseMove
+        TileView_UpdateHotRow(sender, e)   
+    End Sub
+
+    Private Sub TileView1_FocusedRowChanged(sender As Object, e As FocusedRowChangedEventArgs) Handles TileView1.FocusedRowChanged
         
+    End Sub
+
+    Private Sub Grid1_MouseLeave(sender As Object, e As EventArgs) Handles Grid1.MouseLeave
+        '// invalidate previous hottrackrow if any once we leave the grid
+        TileView_InvalidateHotRow(Ctype(Grid1.DefaultView,MyTileView))
+    End Sub
+
+    Private Sub TileView1_ItemCustomize(sender As Object, e As TileViewItemCustomizeEventArgs) Handles TileView1.ItemCustomize
+        TileView_ItemCustomize(e.Item.View, e.Item)
     End Sub
 
 
@@ -501,6 +514,7 @@ Public Class frmMediaTemplate
 #End Region
 
 #Region "Overridable Methods"
+    '// these methods can overrided in an inherited form. Create methods here to communicate with the inherited form.
 
     '// this is marked overridable so it can be handled by the inherited form that handles data stuff
     Overridable Function GetLabelText(ctl As Control) As String
@@ -669,14 +683,15 @@ Public Class frmMediaTemplate
     End Sub
 
     '// set all DevExpress fonts to specific size or auto-size
-    Private Sub ResizeFonts(sender As Object, e As EventArgs)
-        Dim s As String = ComboFontSize.SelectedItem
-        If s = "Auto" Or s = "" Then
+    Private Sub ResizeFonts(s As String)
+        'Dim s As String = ComboFontSize.SelectedItem
+        If s = "Auto" Or s = 0 Then
             scaleManager.ScaleFonts(Me, _appBasefont, _currentScaleFactor)
         Else
             scaleManager.ScaleFonts(Me, _appBasefont, (s / _appBasefont.Size))
         End If
     End Sub
+
 #End Region
 
 #Region "TileView and TileData Formatting and Data Refresh "
@@ -818,9 +833,30 @@ Public Class frmMediaTemplate
         MenuPopup.Items.Clear
         MenuPopup.ShowCheckMargin=True
         SkinMenu(MenuPopup)
+
         menu.Items.Add(CreateMenuItem("UtilitySelection","Print Debug Information",3, "DebugInfo", False))
         menu.Items.Add(CreateMenuItem("UtilitySelection","Rescale Button Images with Handlers",3, "RescaleButtons", False))
-        
+
+        Dim currentSkin = DevExpress.Skins.CommonSkins.GetSkin(defaultLookAndFeel1.LookAndFeel)
+
+        Dim mi As ToolStripMenuItem = CreateMenuItem("UtilitySelection", "Resize Fonts",0, "ResizeFonts", False)
+        '// set the arrowColor
+        MenuRenderer.ArrowColor = currentSkin.Colors("ControlText")
+
+        '// Setup the drop down menu panel
+        Dim dd As ToolStripDropDown = mi.DropDown
+        dd.BackColor = currentSkin.Colors("Control")
+        dd.ForeColor = currentSkin.Colors("ControlText")
+
+        '// Add the items
+        Dim si As ToolStripItem = mi.DropDownItems.Add("Auto",Nothing, AddressOf SubMenu_ItemClicked)
+        si.Name = "ResizeFonts": si.Tag = 0
+        menu.Items.Add(mi)
+        For i = 6 To 18 Step 1
+            si = mi.DropDownItems.Add("Font Size = " & i, Nothing, AddressOf SubMenu_ItemClicked)
+            si.Name = "ResizeFonts"
+            si.Tag = i           
+        Next
     End Sub
 
     '// utility function to create a menu item
@@ -839,6 +875,16 @@ Public Class frmMediaTemplate
         Return item
     End Function
 
+    '// Process SubMenu Clicks
+    Private Sub SubMenu_ItemClicked(Sender As Object, e As System.EventArgs)
+        Dim mi As ToolStripMenuItem = Sender
+        Debug.Print("Clicked: " & mi.Name & "<>" & mi.Text & ":" & mi.Tag)
+        Select Case mi.Name
+            Case "ResizeFonts"
+                ResizeFonts(mi.Tag)
+        End Select
+    End Sub
+
     '// Handle the popup menu item clicks
     Private Sub MenuPopup_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles MenuPopup.ItemClicked
         Debug.Print("Clicked: " & e.ClickedItem.Name & "<>" & e.ClickedItem.Text)
@@ -856,10 +902,10 @@ Public Class frmMediaTemplate
                         DebugPrintInfo
                     Case "RescaleButtons"
                         ResizeButtonImagesWithHandler
+                    Case "ResizeFonts"
                 End Select
         End Select
     End Sub
-
 
 #End Region
 

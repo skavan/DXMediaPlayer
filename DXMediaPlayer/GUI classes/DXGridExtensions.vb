@@ -28,6 +28,7 @@ Public Class MyGridControl
     Protected Overrides Function CreateDefaultView() As BaseView
         Return CreateView("MyTileView")
     End Function
+
     Protected Overrides Sub RegisterAvailableViewsCore(collection As InfoCollection)
         MyBase.RegisterAvailableViewsCore(collection)
         collection.Add(New MyTileViewInfoRegistrator())
@@ -215,6 +216,18 @@ Public Class MyTileViewInfoCore
         End Get
     End Property
 End Class
+
+Public Class MyMenuRenderer
+    Inherits ToolStripProfessionalRenderer
+        Property ArrowColor As Color = Color.Black
+        Protected Overrides Sub OnRenderArrow(e As ToolStripArrowRenderEventArgs)
+            Dim tsMenuItem = TryCast(e.Item, ToolStripMenuItem)
+            If tsMenuItem IsNot Nothing Then
+	            e.ArrowColor = ArrowColor
+            End If
+            MyBase.OnRenderArrow(e)
+        End Sub
+    End Class
 
 'Public Class MyMenuRenderer
 '	Inherits ToolStripProfessionalRenderer
