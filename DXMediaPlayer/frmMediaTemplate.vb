@@ -88,7 +88,7 @@ Public Class frmMediaTemplate
         menuRenderer = MenuPopup.Renderer
         MenuPopup.LayoutStyle = ToolStripLayoutStyle.Table
         
-        '// ClearImmediateWindow
+        ClearImmediateWindow
         '// Logging and Debug
         LogMeTraceLevel(TraceLevel.Info, eTraceCategories.All)
         VerboseMode = False
@@ -465,54 +465,6 @@ Public Class frmMediaTemplate
 
 #End Region
 
-#Region "Main Demo Button Methods"
-
-    '// set all DevExpress fonts to specific size or auto-size
-    Private Sub ButtonResizeFonts_Click(sender As Object, e As EventArgs) Handles ButtonResizeFonts.Click
-        Dim s As String = ComboFontSize.SelectedItem
-        If s = "Auto" Or s = "" Then
-            scaleManager.ScaleFonts(Me, _appBasefont, _currentScaleFactor)
-        Else
-            scaleManager.ScaleFonts(Me, _appBasefont, (s / _appBasefont.Size))
-        End If
-    End Sub
-
-    '// Scale Form by a factor
-    Private Sub ButtonScaleForm_Click(sender As Object, e As EventArgs) Handles ButtonScaleForm.Click
-        Dim s As String = ComboScaleForm.SelectedItem
-        If s > 0 Then
-            _currentScaleFactor = scaleManager.ScaleForm(Me, s, _currentScaleFactor)
-        End If
-    End Sub
-
-    '// Create resizing handlers for relevant buttons
-    Private Sub ButtonResizeBtns_Click(sender As Object, e As EventArgs) Handles ButtonResizeBtns.Click
-        scaleManager.SetButtonSizeChangedHandlers(Me, AddressOf Button_SizeChanged)
-    End Sub
-
-    Private Sub ButtonFontMetrics_Click(sender As Object, e As EventArgs) Handles ButtonFontMetrics.Click
-        Debug.Print("Font Size:" & LabelLPH_C.Font.SizeInPoints)
-        Debug.Print("DevExpress Font Size:" & _appBasefont.Size)
-        Debug.Print("TileViewItem:" & GetTileElement(TileView1, "colTitle").Appearance.Normal.Font.Size)
-        Debug.Print("Ctl Size:" & LabelLPH_C.Height)
-        Debug.Print("Line Spacing:" & LabelLPH_C.Font.GetHeight)
-        Debug.Print("em-height:" & LabelLPH_C.Font.FontFamily.GetEmHeight(LabelLPH_C.Font.Style))
-        Debug.Print("DPIY:" & DevExpress.XtraBars.DPISettings.DpiY)
-        Debug.Print("ScaleFactor" & _currentScaleFactor)
-        Debug.Print("GridScaleFactor:" & Grid1.ScaleFactor.Width)
-        Debug.Print("Form Width: {0}, Form Height: {1}, Panel Width: {2}", Me.Width, Me.Height, PanelLeft.Width)
-    End Sub
-
-
-
-
-    Private Sub ButtonScaleTiles_Click(sender As Object, e As EventArgs) Handles ButtonScaleTiles.Click
-        'TileView1.SetHScaledTileViewItemSize(PanelLeftXtraHeader.Height)
-        ResizeArtwork
-    End Sub
-
-#End Region
-
 #Region "GUI Button Clicks"
 
     Private Sub ButtonLPH_R_Click_1(sender As Object, e As EventArgs) Handles ButtonLPH_R.Click
@@ -540,6 +492,8 @@ Public Class frmMediaTemplate
                 BuildSkinSelectorPopupMenu(MenuPopup)
             Case "SkinSelection"
                 BuildTileStyleSelectionMenu(MenuPopup)
+            Case "UtilitySelection"
+                BuildUtilitySelectionMenu(MenuPopup)
         End Select
         MenuPopup.Show(sender, sender.Width, 0 )
     End Sub
@@ -695,6 +649,34 @@ Public Class frmMediaTemplate
         Marshal.ReleaseComObject(dte)
     End Sub
 
+    '// Print out some debug Info
+    Private Sub DebugPrintInfo
+                Debug.Print("Font Size:" & LabelLPH_C.Font.SizeInPoints)
+        Debug.Print("DevExpress Font Size:" & _appBasefont.Size)
+        Debug.Print("TileViewItem:" & GetTileElement(TileView1, "colTitle").Appearance.Normal.Font.Size)
+        Debug.Print("Ctl Size:" & LabelLPH_C.Height)
+        Debug.Print("Line Spacing:" & LabelLPH_C.Font.GetHeight)
+        Debug.Print("em-height:" & LabelLPH_C.Font.FontFamily.GetEmHeight(LabelLPH_C.Font.Style))
+        Debug.Print("DPIY:" & DevExpress.XtraBars.DPISettings.DpiY)
+        Debug.Print("ScaleFactor" & _currentScaleFactor)
+        Debug.Print("GridScaleFactor:" & Grid1.ScaleFactor.Width)
+        Debug.Print("Form Width: {0}, Form Height: {1}, Panel Width: {2}", Me.Width, Me.Height, PanelLeft.Width)
+    End Sub
+
+    '// Create resizing handlers for relevant buttons
+    Private Sub ResizeButtonImagesWithHandler
+        scaleManager.SetButtonSizeChangedHandlers(Me, AddressOf Button_SizeChanged)
+    End Sub
+
+    '// set all DevExpress fonts to specific size or auto-size
+    Private Sub ResizeFonts(sender As Object, e As EventArgs)
+        Dim s As String = ComboFontSize.SelectedItem
+        If s = "Auto" Or s = "" Then
+            scaleManager.ScaleFonts(Me, _appBasefont, _currentScaleFactor)
+        Else
+            scaleManager.ScaleFonts(Me, _appBasefont, (s / _appBasefont.Size))
+        End If
+    End Sub
 #End Region
 
 #Region "TileView and TileData Formatting and Data Refresh "
@@ -831,6 +813,16 @@ Public Class frmMediaTemplate
         menu.Items.Add(CreateMenuItem("TileStyleSelection","Two Lines without Image (full)",3, eTileStyle.MultiLineNoArt, eTileStyle.MultiLineNoArt = libraryTileStyle))
     End Sub
 
+    '// Build Utility Menu
+    Private Sub BuildUtilitySelectionMenu(menu As ContextMenuStrip)
+        MenuPopup.Items.Clear
+        MenuPopup.ShowCheckMargin=True
+        SkinMenu(MenuPopup)
+        menu.Items.Add(CreateMenuItem("UtilitySelection","Print Debug Information",3, "DebugInfo", False))
+        menu.Items.Add(CreateMenuItem("UtilitySelection","Rescale Button Images with Handlers",3, "RescaleButtons", False))
+        
+    End Sub
+
     '// utility function to create a menu item
     Private Function CreateMenuItem(name As String, text As String, margin As Integer, tag As String, checked As Boolean, Optional image As Image = Nothing) As ToolStripMenuItem
         Dim item As New ToolStripMenuItem
@@ -858,10 +850,17 @@ Public Class frmMediaTemplate
                 DoScaling(e.ClickedItem.Tag)
             Case "TileStyleSelection"
                 libraryTileStyle = SetTileStyle(TileView1, e.ClickedItem.Tag)
+            Case "UtilitySelection"
+                Select Case e.ClickedItem.Tag
+                    Case "DebugInfo"
+                        DebugPrintInfo
+                    Case "RescaleButtons"
+                        ResizeButtonImagesWithHandler
+                End Select
         End Select
     End Sub
 
-    
+
 #End Region
 
 End Class
