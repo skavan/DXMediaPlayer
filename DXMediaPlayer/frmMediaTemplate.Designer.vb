@@ -29,9 +29,17 @@ Partial Class frmMediaTemplate
         Dim TileViewItemElement1 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement = New DevExpress.XtraGrid.Views.Tile.TileViewItemElement()
         Dim TileViewItemElement2 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement = New DevExpress.XtraGrid.Views.Tile.TileViewItemElement()
         Dim TileViewItemElement3 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement = New DevExpress.XtraGrid.Views.Tile.TileViewItemElement()
+        Dim ContextButton3 As DevExpress.Utils.ContextButton = New DevExpress.Utils.ContextButton()
+        Dim ContextButton4 As DevExpress.Utils.ContextButton = New DevExpress.Utils.ContextButton()
+        Dim TileViewItemElement4 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement = New DevExpress.XtraGrid.Views.Tile.TileViewItemElement()
+        Dim TileViewItemElement5 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement = New DevExpress.XtraGrid.Views.Tile.TileViewItemElement()
+        Dim TileViewItemElement6 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement = New DevExpress.XtraGrid.Views.Tile.TileViewItemElement()
         Me.colArt = New DevExpress.XtraGrid.Columns.TileViewColumn()
         Me.colTitle = New DevExpress.XtraGrid.Columns.TileViewColumn()
         Me.colLine2 = New DevExpress.XtraGrid.Columns.TileViewColumn()
+        Me.colQArt = New DevExpress.XtraGrid.Columns.TileViewColumn()
+        Me.colQTitle = New DevExpress.XtraGrid.Columns.TileViewColumn()
+        Me.colQLine2 = New DevExpress.XtraGrid.Columns.TileViewColumn()
         Me.FormAssistant1 = New DevExpress.XtraBars.FormAssistant()
         Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
         Me.PanelTop = New DevExpress.XtraEditors.PanelControl()
@@ -53,20 +61,13 @@ Partial Class frmMediaTemplate
         Me.ButtonLPH_R = New DevExpress.XtraEditors.SimpleButton()
         Me.ButtonLPH_L = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelRight = New DevExpress.XtraEditors.PanelControl()
+        Me.Grid2 = New DevExpress.MyExtensions.MyGridControl()
+        Me.TileView2 = New DevExpress.MyExtensions.MyTileView()
+        Me.RepositoryItemImageEdit2 = New DevExpress.XtraEditors.Repository.RepositoryItemImageEdit()
         Me.PanelRightFooter = New DevExpress.XtraEditors.PanelControl()
         Me.LabelRPF_C = New DevExpress.XtraEditors.LabelControl()
         Me.ButtonRPF_R = New DevExpress.XtraEditors.SimpleButton()
         Me.ButtonRPF_L = New DevExpress.XtraEditors.SimpleButton()
-        Me.SimpleButton4 = New DevExpress.XtraEditors.SimpleButton()
-        Me.ButtonScaleTiles = New DevExpress.XtraEditors.SimpleButton()
-        Me.ButtonFontMetrics = New DevExpress.XtraEditors.SimpleButton()
-        Me.PanelScaleForm = New DevExpress.XtraEditors.PanelControl()
-        Me.ButtonScaleForm = New DevExpress.XtraEditors.SimpleButton()
-        Me.ComboScaleForm = New DevExpress.XtraEditors.ComboBoxEdit()
-        Me.PanelResizeFonts = New DevExpress.XtraEditors.PanelControl()
-        Me.ButtonResizeFonts = New DevExpress.XtraEditors.SimpleButton()
-        Me.ComboFontSize = New DevExpress.XtraEditors.ComboBoxEdit()
-        Me.ButtonResizeBtns = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelRightHeader = New DevExpress.XtraEditors.PanelControl()
         Me.LabelRPH_C = New DevExpress.XtraEditors.LabelControl()
         Me.ButtonRPH_R = New DevExpress.XtraEditors.SimpleButton()
@@ -105,14 +106,11 @@ Partial Class frmMediaTemplate
         Me.PanelLeftHeader.SuspendLayout
         CType(Me.PanelRight,System.ComponentModel.ISupportInitialize).BeginInit
         Me.PanelRight.SuspendLayout
+        CType(Me.Grid2,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.TileView2,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.RepositoryItemImageEdit2,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.PanelRightFooter,System.ComponentModel.ISupportInitialize).BeginInit
         Me.PanelRightFooter.SuspendLayout
-        CType(Me.PanelScaleForm,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.PanelScaleForm.SuspendLayout
-        CType(Me.ComboScaleForm.Properties,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.PanelResizeFonts,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.PanelResizeFonts.SuspendLayout
-        CType(Me.ComboFontSize.Properties,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.PanelRightHeader,System.ComponentModel.ISupportInitialize).BeginInit
         Me.PanelRightHeader.SuspendLayout
         CType(Me.PanelCenter,System.ComponentModel.ISupportInitialize).BeginInit
@@ -156,6 +154,32 @@ Partial Class frmMediaTemplate
         Me.colLine2.Visible = true
         Me.colLine2.VisibleIndex = 2
         '
+        'colQArt
+        '
+        Me.colQArt.FieldName = "colArt"
+        Me.colQArt.Name = "colQArt"
+        Me.colQArt.UnboundType = DevExpress.Data.UnboundColumnType.[String]
+        Me.colQArt.Visible = true
+        Me.colQArt.VisibleIndex = 0
+        '
+        'colQTitle
+        '
+        Me.colQTitle.Caption = "A Slight Case  of Overbombing"
+        Me.colQTitle.FieldName = "colTitle"
+        Me.colQTitle.Name = "colQTitle"
+        Me.colQTitle.UnboundType = DevExpress.Data.UnboundColumnType.[String]
+        Me.colQTitle.Visible = true
+        Me.colQTitle.VisibleIndex = 1
+        '
+        'colQLine2
+        '
+        Me.colQLine2.Caption = "Some Album Title, Artist Title"
+        Me.colQLine2.FieldName = "colLine2"
+        Me.colQLine2.Name = "colQLine2"
+        Me.colQLine2.UnboundType = DevExpress.Data.UnboundColumnType.[String]
+        Me.colQLine2.Visible = true
+        Me.colQLine2.VisibleIndex = 2
+        '
         'DefaultLookAndFeel1
         '
         Me.DefaultLookAndFeel1.LookAndFeel.SkinName = "DevExpress Dark Style"
@@ -174,7 +198,7 @@ Partial Class frmMediaTemplate
         'ButtonsTopPanelRight
         '
         Me.ButtonsTopPanelRight.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonsTopPanelRight.Buttons.AddRange(New DevExpress.XtraEditors.ButtonPanel.IBaseButton() {New DevExpress.XtraBars.Docking2010.WindowsUIButton("ZoomSelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("Button", CType(resources.GetObject("ButtonsTopPanelRight.Buttons1"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("UtilitySelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons2"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("TileStyleSelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons3"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("SkinSelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons4"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false)})
+        Me.ButtonsTopPanelRight.Buttons.AddRange(New DevExpress.XtraEditors.ButtonPanel.IBaseButton() {New DevExpress.XtraBars.Docking2010.WindowsUIButton("ZoomSelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("TileStyleSelection_R", CType(resources.GetObject("ButtonsTopPanelRight.Buttons1"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("UtilitySelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons2"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("TileStyleSelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons3"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false), New DevExpress.XtraBars.Docking2010.WindowsUIButton("SkinSelection", CType(resources.GetObject("ButtonsTopPanelRight.Buttons4"),System.Drawing.Image), -1, DevExpress.XtraBars.Docking2010.ImageLocation.[Default], DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", false, -1, true, Nothing, true, false, true, Nothing, Nothing, -1, false, false)})
         Me.ButtonsTopPanelRight.ContentAlignment = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonsTopPanelRight.Dock = System.Windows.Forms.DockStyle.Right
         Me.ButtonsTopPanelRight.EnableImageTransparency = true
@@ -269,15 +293,16 @@ Partial Class frmMediaTemplate
         TileViewItemElement1.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Stretch
         TileViewItemElement1.ImageSize = New System.Drawing.Size(48, 48)
         TileViewItemElement1.Text = "colArt"
+        TileViewItemElement1.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
         TileViewItemElement2.Column = Me.colTitle
         TileViewItemElement2.Text = "colTitle"
         TileViewItemElement2.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
         TileViewItemElement2.TextLocation = New System.Drawing.Point(56, -1)
-        TileViewItemElement2.Width = 200
-        TileViewItemElement3.AnchorAlignment = DevExpress.Utils.AnchorAlignment.Bottom
-        TileViewItemElement3.AnchorElementIndex = 1
+        TileViewItemElement2.Width = 300
         TileViewItemElement3.Column = Me.colLine2
         TileViewItemElement3.Text = "colLine2"
+        TileViewItemElement3.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
+        TileViewItemElement3.TextLocation = New System.Drawing.Point(56, -1)
         Me.TileView1.TileTemplate.Add(TileViewItemElement1)
         Me.TileView1.TileTemplate.Add(TileViewItemElement2)
         Me.TileView1.TileTemplate.Add(TileViewItemElement3)
@@ -452,13 +477,8 @@ Partial Class frmMediaTemplate
         '
         'PanelRight
         '
+        Me.PanelRight.Controls.Add(Me.Grid2)
         Me.PanelRight.Controls.Add(Me.PanelRightFooter)
-        Me.PanelRight.Controls.Add(Me.SimpleButton4)
-        Me.PanelRight.Controls.Add(Me.ButtonScaleTiles)
-        Me.PanelRight.Controls.Add(Me.ButtonFontMetrics)
-        Me.PanelRight.Controls.Add(Me.PanelScaleForm)
-        Me.PanelRight.Controls.Add(Me.PanelResizeFonts)
-        Me.PanelRight.Controls.Add(Me.ButtonResizeBtns)
         Me.PanelRight.Controls.Add(Me.PanelRightHeader)
         Me.PanelRight.Dock = System.Windows.Forms.DockStyle.Right
         Me.PanelRight.Location = New System.Drawing.Point(1002, 84)
@@ -467,6 +487,74 @@ Partial Class frmMediaTemplate
         Me.PanelRight.Size = New System.Drawing.Size(305, 680)
         Me.PanelRight.TabIndex = 2
         Me.PanelRight.Tag = "0"
+        '
+        'Grid2
+        '
+        Me.Grid2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Grid2.Location = New System.Drawing.Point(3, 57)
+        Me.Grid2.MainView = Me.TileView2
+        Me.Grid2.Name = "Grid2"
+        Me.Grid2.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemImageEdit2})
+        Me.Grid2.Size = New System.Drawing.Size(299, 566)
+        Me.Grid2.TabIndex = 9
+        Me.Grid2.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.TileView2})
+        '
+        'TileView2
+        '
+        Me.TileView2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat
+        Me.TileView2.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colQArt, Me.colQTitle, Me.colQLine2})
+        ContextButton3.Alignment = DevExpress.Utils.ContextItemAlignment.CenterFar
+        ContextButton3.Glyph = Global.MediaPlayer.My.Resources.Resources.Circled_Chevron_Right_64
+        ContextButton3.Id = New System.Guid("4ccc96d6-c66d-45fc-9d18-006b3ff7c731")
+        ContextButton3.MaxHeight = 48
+        ContextButton3.MaxWidth = 48
+        ContextButton3.Name = "ContextButton1"
+        ContextButton3.Padding = New System.Windows.Forms.Padding(0, 0, 6, 0)
+        ContextButton3.Visibility = DevExpress.Utils.ContextItemVisibility.Visible
+        ContextButton4.Alignment = DevExpress.Utils.ContextItemAlignment.CenterFar
+        ContextButton4.AnchorAlignment = DevExpress.Utils.AnchorAlignment.Left
+        ContextButton4.AnchorElementId = New System.Guid("4ccc96d6-c66d-45fc-9d18-006b3ff7c731")
+        ContextButton4.Glyph = Global.MediaPlayer.My.Resources.Resources.Sort_Down_64
+        ContextButton4.Id = New System.Guid("703b944f-511b-43ea-95f8-0de66a54235c")
+        ContextButton4.MaxHeight = 32
+        ContextButton4.MaxWidth = 32
+        ContextButton4.Name = "ContextButton2"
+        Me.TileView2.ContextButtons.Add(ContextButton3)
+        Me.TileView2.ContextButtons.Add(ContextButton4)
+        Me.TileView2.GridControl = Me.Grid2
+        Me.TileView2.HotTrackRow = -2147483648
+        Me.TileView2.MyBorderWidth = 1
+        Me.TileView2.Name = "TileView2"
+        Me.TileView2.OptionsTiles.HorizontalContentAlignment = DevExpress.Utils.HorzAlignment.Near
+        Me.TileView2.OptionsTiles.IndentBetweenItems = 3
+        Me.TileView2.OptionsTiles.ItemPadding = New System.Windows.Forms.Padding(6)
+        Me.TileView2.OptionsTiles.ItemSize = New System.Drawing.Size(300, 64)
+        Me.TileView2.OptionsTiles.Orientation = System.Windows.Forms.Orientation.Vertical
+        Me.TileView2.OptionsTiles.Padding = New System.Windows.Forms.Padding(3)
+        Me.TileView2.OptionsTiles.ShowGroupText = false
+        TileViewItemElement4.Column = Me.colQArt
+        TileViewItemElement4.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
+        TileViewItemElement4.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Stretch
+        TileViewItemElement4.ImageSize = New System.Drawing.Size(48, 48)
+        TileViewItemElement4.Text = "colQArt"
+        TileViewItemElement5.Column = Me.colQTitle
+        TileViewItemElement5.Text = "colQTitle"
+        TileViewItemElement5.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
+        TileViewItemElement5.TextLocation = New System.Drawing.Point(56, -1)
+        TileViewItemElement5.Width = 200
+        TileViewItemElement6.Column = Me.colQLine2
+        TileViewItemElement6.Text = "colQLine2"
+        TileViewItemElement6.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft
+        TileViewItemElement6.TextLocation = New System.Drawing.Point(56, -1)
+        Me.TileView2.TileTemplate.Add(TileViewItemElement4)
+        Me.TileView2.TileTemplate.Add(TileViewItemElement5)
+        Me.TileView2.TileTemplate.Add(TileViewItemElement6)
+        '
+        'RepositoryItemImageEdit2
+        '
+        Me.RepositoryItemImageEdit2.AutoHeight = false
+        Me.RepositoryItemImageEdit2.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo), New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemImageEdit2.Name = "RepositoryItemImageEdit2"
         '
         'PanelRightFooter
         '
@@ -524,120 +612,6 @@ Partial Class frmMediaTemplate
         Me.ButtonRPF_L.TabIndex = 4
         Me.ButtonRPF_L.Tag = "UsePadding"
         Me.ButtonRPF_L.ToolTip = "Scale Form Down by 25%"
-        '
-        'SimpleButton4
-        '
-        Me.SimpleButton4.AllowFocus = false
-        Me.SimpleButton4.Appearance.Options.UseFont = true
-        Me.SimpleButton4.Dock = System.Windows.Forms.DockStyle.Top
-        Me.SimpleButton4.Location = New System.Drawing.Point(3, 327)
-        Me.SimpleButton4.Name = "SimpleButton4"
-        Me.SimpleButton4.Size = New System.Drawing.Size(299, 54)
-        Me.SimpleButton4.TabIndex = 5
-        Me.SimpleButton4.Text = "Resize Button Images"
-        '
-        'ButtonScaleTiles
-        '
-        Me.ButtonScaleTiles.AllowFocus = false
-        Me.ButtonScaleTiles.Appearance.Options.UseFont = true
-        Me.ButtonScaleTiles.Dock = System.Windows.Forms.DockStyle.Top
-        Me.ButtonScaleTiles.Location = New System.Drawing.Point(3, 273)
-        Me.ButtonScaleTiles.Name = "ButtonScaleTiles"
-        Me.ButtonScaleTiles.Size = New System.Drawing.Size(299, 54)
-        Me.ButtonScaleTiles.TabIndex = 4
-        Me.ButtonScaleTiles.Text = "Resize Grid Tiles"
-        '
-        'ButtonFontMetrics
-        '
-        Me.ButtonFontMetrics.AllowFocus = false
-        Me.ButtonFontMetrics.Appearance.Options.UseFont = true
-        Me.ButtonFontMetrics.Dock = System.Windows.Forms.DockStyle.Top
-        Me.ButtonFontMetrics.Location = New System.Drawing.Point(3, 219)
-        Me.ButtonFontMetrics.Name = "ButtonFontMetrics"
-        Me.ButtonFontMetrics.Size = New System.Drawing.Size(299, 54)
-        Me.ButtonFontMetrics.TabIndex = 3
-        Me.ButtonFontMetrics.Text = "Font Information"
-        '
-        'PanelScaleForm
-        '
-        Me.PanelScaleForm.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-        Me.PanelScaleForm.Controls.Add(Me.ButtonScaleForm)
-        Me.PanelScaleForm.Controls.Add(Me.ComboScaleForm)
-        Me.PanelScaleForm.Dock = System.Windows.Forms.DockStyle.Top
-        Me.PanelScaleForm.Location = New System.Drawing.Point(3, 165)
-        Me.PanelScaleForm.Margin = New System.Windows.Forms.Padding(0)
-        Me.PanelScaleForm.Name = "PanelScaleForm"
-        Me.PanelScaleForm.Size = New System.Drawing.Size(299, 54)
-        Me.PanelScaleForm.TabIndex = 7
-        '
-        'ButtonScaleForm
-        '
-        Me.ButtonScaleForm.AllowFocus = false
-        Me.ButtonScaleForm.Appearance.Options.UseFont = true
-        Me.ButtonScaleForm.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonScaleForm.Location = New System.Drawing.Point(0, 0)
-        Me.ButtonScaleForm.Name = "ButtonScaleForm"
-        Me.ButtonScaleForm.Size = New System.Drawing.Size(219, 54)
-        Me.ButtonScaleForm.TabIndex = 0
-        Me.ButtonScaleForm.Text = "Scale Form"
-        '
-        'ComboScaleForm
-        '
-        Me.ComboScaleForm.Dock = System.Windows.Forms.DockStyle.Right
-        Me.ComboScaleForm.EditValue = "1.25"
-        Me.ComboScaleForm.Location = New System.Drawing.Point(219, 0)
-        Me.ComboScaleForm.Name = "ComboScaleForm"
-        Me.ComboScaleForm.Properties.AutoHeight = false
-        Me.ComboScaleForm.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.ComboScaleForm.Properties.Items.AddRange(New Object() {"2", "1.5", "1.25", "1", "0.75", "0.5"})
-        Me.ComboScaleForm.Size = New System.Drawing.Size(80, 54)
-        Me.ComboScaleForm.TabIndex = 1
-        '
-        'PanelResizeFonts
-        '
-        Me.PanelResizeFonts.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-        Me.PanelResizeFonts.Controls.Add(Me.ButtonResizeFonts)
-        Me.PanelResizeFonts.Controls.Add(Me.ComboFontSize)
-        Me.PanelResizeFonts.Dock = System.Windows.Forms.DockStyle.Top
-        Me.PanelResizeFonts.Location = New System.Drawing.Point(3, 111)
-        Me.PanelResizeFonts.Margin = New System.Windows.Forms.Padding(0)
-        Me.PanelResizeFonts.Name = "PanelResizeFonts"
-        Me.PanelResizeFonts.Size = New System.Drawing.Size(299, 54)
-        Me.PanelResizeFonts.TabIndex = 6
-        '
-        'ButtonResizeFonts
-        '
-        Me.ButtonResizeFonts.AllowFocus = false
-        Me.ButtonResizeFonts.Appearance.Options.UseFont = true
-        Me.ButtonResizeFonts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonResizeFonts.Location = New System.Drawing.Point(0, 0)
-        Me.ButtonResizeFonts.Name = "ButtonResizeFonts"
-        Me.ButtonResizeFonts.Size = New System.Drawing.Size(219, 54)
-        Me.ButtonResizeFonts.TabIndex = 0
-        Me.ButtonResizeFonts.Text = "Resize Fonts"
-        '
-        'ComboFontSize
-        '
-        Me.ComboFontSize.Dock = System.Windows.Forms.DockStyle.Right
-        Me.ComboFontSize.EditValue = "Auto"
-        Me.ComboFontSize.Location = New System.Drawing.Point(219, 0)
-        Me.ComboFontSize.Name = "ComboFontSize"
-        Me.ComboFontSize.Properties.AutoHeight = false
-        Me.ComboFontSize.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.ComboFontSize.Properties.Items.AddRange(New Object() {"Auto", "8", "10", "12", "14", "16", "18", "20"})
-        Me.ComboFontSize.Size = New System.Drawing.Size(80, 54)
-        Me.ComboFontSize.TabIndex = 1
-        '
-        'ButtonResizeBtns
-        '
-        Me.ButtonResizeBtns.AllowFocus = false
-        Me.ButtonResizeBtns.Appearance.Options.UseFont = true
-        Me.ButtonResizeBtns.Dock = System.Windows.Forms.DockStyle.Top
-        Me.ButtonResizeBtns.Location = New System.Drawing.Point(3, 57)
-        Me.ButtonResizeBtns.Name = "ButtonResizeBtns"
-        Me.ButtonResizeBtns.Size = New System.Drawing.Size(299, 54)
-        Me.ButtonResizeBtns.TabIndex = 2
-        Me.ButtonResizeBtns.Text = "Resize LPH Button Images"
         '
         'PanelRightHeader
         '
@@ -1012,14 +986,11 @@ Partial Class frmMediaTemplate
         Me.PanelLeftHeader.ResumeLayout(false)
         CType(Me.PanelRight,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelRight.ResumeLayout(false)
+        CType(Me.Grid2,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.TileView2,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.RepositoryItemImageEdit2,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.PanelRightFooter,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelRightFooter.ResumeLayout(false)
-        CType(Me.PanelScaleForm,System.ComponentModel.ISupportInitialize).EndInit
-        Me.PanelScaleForm.ResumeLayout(false)
-        CType(Me.ComboScaleForm.Properties,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.PanelResizeFonts,System.ComponentModel.ISupportInitialize).EndInit
-        Me.PanelResizeFonts.ResumeLayout(false)
-        CType(Me.ComboFontSize.Properties,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.PanelRightHeader,System.ComponentModel.ISupportInitialize).EndInit
         Me.PanelRightHeader.ResumeLayout(false)
         CType(Me.PanelCenter,System.ComponentModel.ISupportInitialize).EndInit
@@ -1053,16 +1024,6 @@ End Sub
     Friend WithEvents ButtonLPH_L As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents RepositoryItemImageEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemImageEdit
     Friend WithEvents PanelRight As DevExpress.XtraEditors.PanelControl
-    Friend WithEvents SimpleButton4 As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents ButtonScaleTiles As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents ButtonFontMetrics As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents PanelScaleForm As DevExpress.XtraEditors.PanelControl
-    Friend WithEvents ButtonScaleForm As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents ComboScaleForm As DevExpress.XtraEditors.ComboBoxEdit
-    Friend WithEvents PanelResizeFonts As DevExpress.XtraEditors.PanelControl
-    Friend WithEvents ButtonResizeFonts As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents ComboFontSize As DevExpress.XtraEditors.ComboBoxEdit
-    Friend WithEvents ButtonResizeBtns As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents PanelRightHeader As DevExpress.XtraEditors.PanelControl
     Friend WithEvents LabelRPH_C As DevExpress.XtraEditors.LabelControl
     Friend WithEvents ButtonRPH_R As DevExpress.XtraEditors.SimpleButton
@@ -1100,4 +1061,10 @@ End Sub
     Friend WithEvents PanelCenterBody As DevExpress.XtraEditors.PanelControl
     Friend WithEvents colLine2 As DevExpress.XtraGrid.Columns.TileViewColumn
     Friend WithEvents ButtonsTopPanelRight As DevExpress.XtraBars.Docking2010.WindowsUIButtonPanel
+    Friend WithEvents Grid2 As DevExpress.MyExtensions.MyGridControl
+    Friend WithEvents TileView2 As DevExpress.MyExtensions.MyTileView
+    Friend WithEvents colQArt As DevExpress.XtraGrid.Columns.TileViewColumn
+    Friend WithEvents colQTitle As DevExpress.XtraGrid.Columns.TileViewColumn
+    Friend WithEvents colQLine2 As DevExpress.XtraGrid.Columns.TileViewColumn
+    Friend WithEvents RepositoryItemImageEdit2 As DevExpress.XtraEditors.Repository.RepositoryItemImageEdit
 End Class

@@ -128,6 +128,8 @@ Class ScaleManager
     '// scale everything on a form by a factor
     Public Sub ScaleFormByFactor(form As XtraForm, factor As SizeF)
         form.Scale(factor)
+        form.Scale(New SizeF(1,1)) '// solely for the benefit of the grid control, which has a bug in it.
+       
     End Sub
 
     '// given a basefont (the starting font size, family and style), rescale it by a factor and set all Devexpress controls to this, then process individually overridden children

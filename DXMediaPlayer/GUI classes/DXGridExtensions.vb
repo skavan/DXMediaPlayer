@@ -110,8 +110,8 @@ Public Class MyTileView
         If _vScrollBar.Visible Then b = _vScrollBar.Width - Me.GetGridDefaultMargin.Right'+ _vScrollBar.Margin.Left
         Dim c As Single = 0 'Me.OptionsTiles.Padding.Horizontal
         Dim d As Single = Me.GetGridDefaultMargin.Horizontal
-        Dim scaledWidth As Single = (a - b - c - d)/Me.GridControl.ScaleFactor.Width
-        Dim scaledHeight = unScaledHeight/Me.GridControl.ScaleFactor.Height
+        Dim scaledWidth As Single = (a - b - c - d) '/Me.GridControl.ScaleFactor.Width
+        Dim scaledHeight = unScaledHeight '/Me.GridControl.ScaleFactor.Height
         Return New SizeF(scaledWidth, scaledHeight)
     End Function
 
@@ -130,7 +130,8 @@ Public Class MyTileView
         For Each ciViewInfo As ContextItemViewInfo In itemInfo.ContextButtonsInfo.Items
             If ciViewInfo.Item.Visibility=ContextItemVisibility.Visible Then        'Only if its visible
                 If ciViewInfo.Item.Alignment=ContextItemAlignment.CenterFar Then
-                    Dim adjWidth As Single = (ciViewInfo.Bounds.Location.X / Me.GridControl.ScaleFactor.Width) - 6
+                    'Dim adjWidth As Single = (ciViewInfo.Bounds.Location.X / Me.GridControl.ScaleFactor.Width) - 6
+                    Dim adjWidth As Single = (ciViewInfo.Bounds.Location.X) - 6
                     If adjWidth < xpos2 Then xpos2 = adjWidth
                 End If
             End If
@@ -153,10 +154,14 @@ Public Class MyTileView
         If Me.RowCount=0 Then Return New Rectangle(0,0,0,0)
         Dim item As TileViewItem = GetTileViewItem(0)
         
+        'Dim r As New Rectangle(item.Padding.Left, 
+        '                       item.Padding.Right,
+        '                       (Me.OptionsTiles.ItemSize.Width*Me.GridControl.ScaleFactor.Width )+item.Padding.Left,
+        '                       (Me.OptionsTiles.ItemSize.Height*Me.GridControl.ScaleFactor.Height)+item.Padding.Top)
         Dim r As New Rectangle(item.Padding.Left, 
                                item.Padding.Right,
-                               (Me.OptionsTiles.ItemSize.Width*Me.GridControl.ScaleFactor.Width )+item.Padding.Left,
-                               (Me.OptionsTiles.ItemSize.Height*Me.GridControl.ScaleFactor.Height)+item.Padding.Top)
+                               (Me.OptionsTiles.ItemSize.Width)+item.Padding.Left,
+                               (Me.OptionsTiles.ItemSize.Height)+item.Padding.Top)
         Return r
     End Function
 
