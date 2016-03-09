@@ -56,8 +56,8 @@ Public Class frmMediaTemplate
         MultiLineNoArt
     End Enum
 
-    Dim libraryTileStyle As eTileStyle = eTileStyle.MultiLineFull
-    Dim queueTileStyle As eTileStyle = eTileStyle.MultiLineFull
+    Public libraryTileStyle As eTileStyle = eTileStyle.MultiLineFull
+    Public queueTileStyle As eTileStyle = eTileStyle.MultiLineFull
 
     Dim _forceLeft As eForceShowState=eForceShowState.Normal
     Dim _forceRight As eForceShowState=eForceShowState.Normal
@@ -576,6 +576,10 @@ Public Class frmMediaTemplate
         Return ""
     End Function
 
+    Overridable Function NavigateDataset(dataset As String, direction As String) As Boolean
+        Return False
+    End Function
+
 #End Region
 
 #Region "Important Supporting Methods"    
@@ -813,16 +817,25 @@ Public Class frmMediaTemplate
             End Select
         End If
     End Sub
-
+    Public Function SetTileStyle(dataset As String, tileStyle As eTileStyle) As eTileStyle
+        Select Case dataset
+            Case "Library"
+                libraryTileStyle =  SetTileStyle(TileView1, tileStyle)
+                Return libraryTileStyle
+            Case Else
+                Return tileStyle    '// for now
+        End Select
+    End Function
     '// Sets the style for a tile (single line, multiline, with or without art)
     Private Function SetTileStyle(tileView As MyTileView, tileStyle As eTileStyle) As eTileStyle
         If tileView.DataSource Is Nothing Then Return tilestyle
-
+        If tileView.RowCount=0 Then Return tileStyle
+        If tileView.IsTileViewItemsVisible = False Then Return tileStyle
         AssignTileViewColumns(tileView)
         Dim font As Font = DevExpress.Utils.AppearanceObject.DefaultFont
 
         '// calculate the available height
-        Dim availHeight = tileView.GetTileViewItem(0).ItemInfo.ContentBounds.Height
+        Dim availHeight = tileView.GetVisibleTileViewItem(0).ItemInfo.ContentBounds.Height
         
         '// set the image to the height available for content
         TV_colArt.ImageSize = New Size(availHeight, availHeight)
@@ -861,7 +874,7 @@ Public Class frmMediaTemplate
         End Select
         
         '// paint and scale the context buttons
-        availHeight = TileView1.GetTileViewItem(0).ItemInfo.ContentBounds.Height
+        availHeight = tileView.GetVisibleTileViewItem(0).ItemInfo.ContentBounds.Height
         Dim bigIconSize = New Size(availHeight*.75,availHeight*.75)
         Dim smIconSize= New Size(availHeight*.5,availHeight*.5)
         Dim adjust As Single = ((bigIconSize.Height-smIconSize.Height)/2) 
@@ -1027,6 +1040,13 @@ Public Class frmMediaTemplate
     Private Sub ButtonCPF_R_Click(sender As Object, e As EventArgs) Handles ButtonCPF_R.Click
         Debug.Print("Form Font Size: {0}, AppBaseFont Size: {1}, DevExpressFontSize: {2}",Me.Font.Size,_appBasefont.Size, DevExpress.Utils.AppearanceObject.DefaultFont.Size)
     End Sub
+
+    Private Sub ButtonLPF_L_Click(sender As Object, e As EventArgs) Handles ButtonLPF_L.Click
+        NavigateDataset("Library", "back")
+    End Sub
+
+
+
 
 #End Region
 

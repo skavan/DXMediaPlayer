@@ -58,6 +58,7 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -84,6 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data classes\DataClass.vb" />
+    <Compile Include="frmProperties.Designer.vb">
+      <DependentUpon>frmProperties.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProperties.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI classes\DXGridExtensions.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -121,6 +128,9 @@
     <Compile Include="Utility Classes\TraceLogger.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmProperties.resx">
+      <DependentUpon>frmProperties.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI classes\DXGridExtensions.resx">
       <DependentUpon>DXGridExtensions.vb</DependentUpon>
     </EmbeddedResource>
@@ -182,6 +192,12 @@
     <None Include="Resources\Expand Arrow-64.png" />
     <None Include="Resources\Forward-64.png" />
     <Content Include="Resources\Jason Derulo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SonosSMAPI\SonosSMAPI.vbproj">
+      <Project>{0d079914-5e38-4db7-badf-c5b61119de0e}</Project>
+      <Name>SonosSMAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

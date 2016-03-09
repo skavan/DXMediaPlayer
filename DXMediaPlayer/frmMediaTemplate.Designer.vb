@@ -51,8 +51,8 @@ Partial Class frmMediaTemplate
         Me.RepositoryItemImageEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemImageEdit()
         Me.PanelLeftFooter = New DevExpress.XtraEditors.PanelControl()
         Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
-        Me.SimpleButton1 = New DevExpress.XtraEditors.SimpleButton()
-        Me.SimpleButton2 = New DevExpress.XtraEditors.SimpleButton()
+        Me.ButtonLPF_R = New DevExpress.XtraEditors.SimpleButton()
+        Me.ButtonLPF_L = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelLeftXtraHeader = New DevExpress.XtraEditors.PanelControl()
         Me.LabelXtraItem = New DevExpress.XtraEditors.LabelControl()
         Me.ButtonXtraItem = New DevExpress.XtraEditors.SimpleButton()
@@ -316,8 +316,8 @@ Partial Class frmMediaTemplate
         'PanelLeftFooter
         '
         Me.PanelLeftFooter.Controls.Add(Me.LabelControl1)
-        Me.PanelLeftFooter.Controls.Add(Me.SimpleButton1)
-        Me.PanelLeftFooter.Controls.Add(Me.SimpleButton2)
+        Me.PanelLeftFooter.Controls.Add(Me.ButtonLPF_R)
+        Me.PanelLeftFooter.Controls.Add(Me.ButtonLPF_L)
         Me.PanelLeftFooter.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.PanelLeftFooter.Location = New System.Drawing.Point(3, 623)
         Me.PanelLeftFooter.Name = "PanelLeftFooter"
@@ -337,37 +337,37 @@ Partial Class frmMediaTemplate
         Me.LabelControl1.TabIndex = 2
         Me.LabelControl1.Text = "Artists > Album"
         '
-        'SimpleButton1
+        'ButtonLPF_R
         '
-        Me.SimpleButton1.AllowFocus = false
-        Me.SimpleButton1.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
-        Me.SimpleButton1.Dock = System.Windows.Forms.DockStyle.Right
-        Me.SimpleButton1.Image = CType(resources.GetObject("SimpleButton1.Image"),System.Drawing.Image)
-        Me.SimpleButton1.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
-        Me.SimpleButton1.Location = New System.Drawing.Point(411, 3)
-        Me.SimpleButton1.Margin = New System.Windows.Forms.Padding(6)
-        Me.SimpleButton1.Name = "SimpleButton1"
-        Me.SimpleButton1.Padding = New System.Windows.Forms.Padding(6)
-        Me.SimpleButton1.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
-        Me.SimpleButton1.Size = New System.Drawing.Size(48, 48)
-        Me.SimpleButton1.TabIndex = 1
-        Me.SimpleButton1.Tag = "UsePadding"
+        Me.ButtonLPF_R.AllowFocus = false
+        Me.ButtonLPF_R.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
+        Me.ButtonLPF_R.Dock = System.Windows.Forms.DockStyle.Right
+        Me.ButtonLPF_R.Image = CType(resources.GetObject("ButtonLPF_R.Image"),System.Drawing.Image)
+        Me.ButtonLPF_R.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
+        Me.ButtonLPF_R.Location = New System.Drawing.Point(411, 3)
+        Me.ButtonLPF_R.Margin = New System.Windows.Forms.Padding(6)
+        Me.ButtonLPF_R.Name = "ButtonLPF_R"
+        Me.ButtonLPF_R.Padding = New System.Windows.Forms.Padding(6)
+        Me.ButtonLPF_R.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
+        Me.ButtonLPF_R.Size = New System.Drawing.Size(48, 48)
+        Me.ButtonLPF_R.TabIndex = 1
+        Me.ButtonLPF_R.Tag = "UsePadding"
         '
-        'SimpleButton2
+        'ButtonLPF_L
         '
-        Me.SimpleButton2.AllowFocus = false
-        Me.SimpleButton2.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
-        Me.SimpleButton2.Dock = System.Windows.Forms.DockStyle.Left
-        Me.SimpleButton2.Image = CType(resources.GetObject("SimpleButton2.Image"),System.Drawing.Image)
-        Me.SimpleButton2.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
-        Me.SimpleButton2.Location = New System.Drawing.Point(3, 3)
-        Me.SimpleButton2.Margin = New System.Windows.Forms.Padding(6)
-        Me.SimpleButton2.Name = "SimpleButton2"
-        Me.SimpleButton2.Padding = New System.Windows.Forms.Padding(6)
-        Me.SimpleButton2.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
-        Me.SimpleButton2.Size = New System.Drawing.Size(48, 48)
-        Me.SimpleButton2.TabIndex = 0
-        Me.SimpleButton2.Tag = "UsePadding"
+        Me.ButtonLPF_L.AllowFocus = false
+        Me.ButtonLPF_L.AllowGlyphSkinning = DevExpress.Utils.DefaultBoolean.[True]
+        Me.ButtonLPF_L.Dock = System.Windows.Forms.DockStyle.Left
+        Me.ButtonLPF_L.Image = CType(resources.GetObject("ButtonLPF_L.Image"),System.Drawing.Image)
+        Me.ButtonLPF_L.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter
+        Me.ButtonLPF_L.Location = New System.Drawing.Point(3, 3)
+        Me.ButtonLPF_L.Margin = New System.Windows.Forms.Padding(6)
+        Me.ButtonLPF_L.Name = "ButtonLPF_L"
+        Me.ButtonLPF_L.Padding = New System.Windows.Forms.Padding(6)
+        Me.ButtonLPF_L.ShowFocusRectangle = DevExpress.Utils.DefaultBoolean.[False]
+        Me.ButtonLPF_L.Size = New System.Drawing.Size(48, 48)
+        Me.ButtonLPF_L.TabIndex = 0
+        Me.ButtonLPF_L.Tag = "UsePadding"
         '
         'PanelLeftXtraHeader
         '
@@ -1037,8 +1037,8 @@ End Sub
     Friend WithEvents colTitle As DevExpress.XtraGrid.Columns.TileViewColumn
     Friend WithEvents PanelLeftFooter As DevExpress.XtraEditors.PanelControl
     Friend WithEvents LabelControl1 As DevExpress.XtraEditors.LabelControl
-    Friend WithEvents SimpleButton1 As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents SimpleButton2 As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents ButtonLPF_R As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents ButtonLPF_L As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents ButtonCPH_R As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents ButtonCPH_L As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents PanelCenterFooter As DevExpress.XtraEditors.PanelControl

@@ -4,7 +4,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 
 <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter)), System.Serializable()>
-    Public Class MusicItem
+    Public Class XmlMusicItem
         Private _artWork As Image
 
         Sub Setdata(_id As String, _title As String, _artist As String, _album As String, _artWork As Image)

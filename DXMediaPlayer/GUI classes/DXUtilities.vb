@@ -162,6 +162,7 @@ Module DXUtilities
 
     '// given a target size, a skinelement and a target image index, construct a graphic
     Public Function DrawButtonSkinGraphic(activeLookAndFeel As UserLookAndFeel, tgtRect As Rectangle, skinCategory As Object, elementName As String, imageIndex As Integer) As Image
+        
         Dim skinImage As SkinImage = GetSkinElementSkinImage(activeLookAndFeel, skinCategory, elementName)
         'Dim image As Image = skinImage.GetImages.Images(imageIndex)
         Dim image As Image = GetImageFromSkinImage(skinImage, imageIndex)
@@ -171,6 +172,11 @@ Module DXUtilities
         Dim w As Integer = tgtRect.Width
         Dim t As Integer = 0
         Dim h As Integer = tgtRect.Height
+        If w = 0 And h = 0 Then
+            Debug.Print("WHY AM I HERE!")
+            Return New Bitmap(1,1)
+
+        End If
 
         Dim bmp As New Bitmap(w, h)
         Using g As Graphics = Graphics.FromImage(bmp)

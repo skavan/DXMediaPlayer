@@ -63,7 +63,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         '''&lt;ArrayOfMusicItem xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
-        '''  &lt;MusicItem&gt;
+        '''  &lt;XmlMusicItem&gt;
         '''    &lt;ID&gt;_dklxfo-EJM48pY_jdHranOj1X60pyq8hB2XLIDNJgG3K8efE_4YQ54ibwcK9NdC&lt;/ID&gt;
         '''    &lt;Title&gt;Under the Gun&lt;/Title&gt;
         '''    &lt;Artist&gt;The Sisters of Mercy&lt;/Artist&gt;
@@ -249,7 +249,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         '''&lt;ArrayOfMusicItem xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
-        '''  &lt;MusicItem&gt;
+        '''  &lt;XmlMusicItem&gt;
         '''    &lt;ID&gt;_dklxfo-EJM48pY_jdHranOj1X60pyq8hB2XLIDNJgG3K8efE_4YQ54ibwcK9NdC&lt;/ID&gt;
         '''    &lt;Title&gt;Under the Gun&lt;/Title&gt;
         '''    &lt;Artist&gt;The Sisters of Mercy&lt;/Artist&gt;

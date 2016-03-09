@@ -79,10 +79,25 @@ Public Class MyTileView
 
     Public Property HotTrackRow As Integer = GridControl.InvalidRowHandle
 
-    Public Function GetTileViewItem(visibleRowHandle) As TileViewItem
+    Public Function IsTileViewItemsVisible As Boolean
+        Dim tileControl As ITileControl = TryCast(Me.GetViewInfo(), ITileControl)
+        Dim tvi As TileViewInfoCore = tileControl.ViewInfo
+        If tvi.VisibleItems.Count = 0 Then 
+                Return False
+           Else
+                Return True
+        End If
+    End Function
+    Public Function GetVisibleTileViewItem(visibleRowHandle) As TileViewItem
         If Me.DataRowCount=0 Then Return Nothing
         '// the rowHandle is the visible Row Handle, not the data Row Handle
-        Return TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore).VisibleItems.Values(visibleRowHandle)
+        Dim tileControl As ITileControl = TryCast(Me.GetViewInfo(), ITileControl)
+        Dim tvi As TileViewInfoCore = tileControl.ViewInfo
+        If tvi.VisibleItems.Count = 0 Then 
+                Return Nothing
+           Else
+                Return TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore).VisibleItems.Values(visibleRowHandle)
+        End If
     End Function
 
     Public Sub New()
@@ -119,7 +134,7 @@ Public Class MyTileView
         If Me.TileTemplate Is Nothing Or column.View Is Nothing Then Return Nothing
         If TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore).VisibleItems.Count=0 Then Return Nothing
         Dim tileItemElement As TileItemElement = Me.TileTemplate(column.AbsoluteIndex)
-        Dim item As TileViewItem = Me?.GetTileViewItem(0)
+        Dim item As TileViewItem = Me?.GetVisibleTileViewItem(0)
         If item Is Nothing Then Return Nothing
         Dim itemInfo As TileViewItemInfo = item.ItemInfo 
         Dim xPos1 As Single = tileItemElement.TextLocation.X        'The start pos
@@ -152,8 +167,11 @@ Public Class MyTileView
     Public Function GetTileViewItemBackgroundBounds As Rectangle
         '// get the first item
         If Me.RowCount=0 Then Return New Rectangle(0,0,0,0)
-        Dim item As TileViewItem = GetTileViewItem(0)
-        
+        Dim item As TileViewItem = GetVisibleTileViewItem(0)
+        If item Is Nothing Then
+            Debug.Print("GETTILEVIEWITEMBACKGROUND INVALID")
+            Return New Rectangle(0,0,0,0)
+        End If
         'Dim r As New Rectangle(item.Padding.Left, 
         '                       item.Padding.Right,
         '                       (Me.OptionsTiles.ItemSize.Width*Me.GridControl.ScaleFactor.Width )+item.Padding.Left,
