@@ -54,8 +54,16 @@ Public Class MusicServiceInfo
     End Class
     Public Class MusicItem
         Inherits MusicItem2
+        'Delegate Function GetArtWorkDelegate(url As String) As Image
         Property Items As New Dictionary(Of String, musicItem)
         Property Smapi As Object
+        'Public GetArtMethod As GetArtWorkDelegate
+        'Public Function GetArt As Image
+        '    If GetArtMethod IsNot Nothing Then
+        '        Return GetArtMethod(ArtUrl)
+        '    End If
+        '    Return Nothing
+        'End Function
     End Class
 <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter)), System.Serializable()>
     Public Class MusicItem2

@@ -88,6 +88,12 @@ Public Class MyTileView
                 Return True
         End If
     End Function
+
+    Public Function GetVisibleRows As Dictionary(Of Integer, DevExpress.XtraGrid.Views.Tile.TileViewItem)
+        Dim x As TileViewInfoCore = TryCast(TryCast(Me.GetViewInfo(), ITileControl).ViewInfo, TileViewInfoCore)
+        Return x.VisibleItems
+    End Function
+
     Public Function GetVisibleTileViewItem(visibleRowHandle) As TileViewItem
         If Me.DataRowCount=0 Then Return Nothing
         '// the rowHandle is the visible Row Handle, not the data Row Handle

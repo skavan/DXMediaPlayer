@@ -1,7 +1,9 @@
 ﻿Imports System.IO
 Imports System.Xml.Serialization
+Imports Sonos.Smapi
 
 Module DataUtilities
+
     '// serialize a XmlMusicItem List
     Public Sub SerializeMusicItemLibrary(mList As List(Of XmlMusicItem), filepath As String)
 
@@ -27,7 +29,7 @@ Module DataUtilities
         Return items
     End Function
 
-     '// deserialize a XmlMusicItem List
+    '// deserialize a XmlMusicItem List
     Public Function DeSerializeMusicItemLibrary(data As String, isResource As Boolean) As Dictionary(Of String, XmlMusicItem)
         Dim ser As XmlSerializer = New XmlSerializer(GetType(List(Of XmlMusicItem)))
         Dim items As New List(Of XmlMusicItem)
@@ -46,4 +48,29 @@ Module DataUtilities
 
         Return dic
     End Function
+
+#Region "MusicItem related"
+
+    '// Given a rootMusic Item and an ID (and a ServiceID to narrow scope), go find the target MusicItem and return it.
+    Public Function FindParentMusicItem(rootItem As MusicItem, SonosServiceID As String, ID As String) As MusicItem
+        '// start with the root
+        If rootItem.ID = ID Then Return rootItem
+        '// Then try each child in items.values
+        For Each item As MusicItem In rootItem.Items.Values
+            '// we are only interested in items (and their children that match the ServiceID)
+            If item.SonosServiceID = SonosServiceID Then
+                '// if we get a match return it.
+                If item.ID = ID Then Return item
+                '// Otherwise, if this item has children, recurse into them
+                If item.Items.Count > 0 Then
+                    Dim subItem As MusicItem = FindParentMusicItem(item, SonosServiceID, ID)
+                    If subItem IsNot Nothing Then Return subItem
+                End If
+            End If
+
+        Next
+        Return Nothing
+    End Function
+
+#End Region
 End Module

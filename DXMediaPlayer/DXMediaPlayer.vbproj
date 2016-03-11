@@ -85,10 +85,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data classes\DataClass.vb" />
+    <Compile Include="Data classes\DataManager.vb" />
+    <Compile Include="Data classes\DataRetrieval.vb" />
+    <Compile Include="Data classes\ImageDownloader.vb" />
     <Compile Include="frmProperties.Designer.vb">
       <DependentUpon>frmProperties.vb</DependentUpon>
     </Compile>
     <Compile Include="frmProperties.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSonosPlayer.Designer.vb">
+      <DependentUpon>frmSonosPlayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSonosPlayer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI classes\DXGridExtensions.vb">

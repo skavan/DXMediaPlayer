@@ -1,11 +1,11 @@
-﻿
-Imports DevExpress.XtraGrid.Views.Base
+﻿Imports DevExpress.XtraGrid.Views.Base
 Imports DevExpress.XtraGrid.Views.Tile
 Imports Sonos.Smapi
 Imports Sonos.Smapi.Wsdl
 
 Public Class frmPlayer
 
+#Region "Variables & Enums"
     '// used for bound and unbound libraryData management
     Dim libraryData As Dictionary(Of String, XmlMusicItem)
     Dim queueData As Dictionary(Of String, XmlMusicItem)
@@ -16,24 +16,29 @@ Public Class frmPlayer
     Dim musicServices As New Dictionary(Of String, MusicServiceInfo)            'A collection of MusicServices
     Dim rootItem As MusicItem                                                   'This is the top-most node
     Dim currentItem As MusicItem
-
     Const ITEMCOUNT = 50
+    '// a dictionary tohold images
+    Dim imageCache As New Dictionary(Of String, Image)                          'A dictionary to hold cached images
+    '// a class to download images async
+    Dim WithEvents imageLoader As New ImageDownloader                           ' A class to load images Async
 
+#End Region
+
+#Region "Initialization"
     Private Sub frmPlayer_Load(sender As Object, e As EventArgs) Handles Me.Load
-        'Grid1.DataSource = GetInitialDataset(librarydata, false)
         SetupMusicServices
+        'Grid1.DataSource = GetInitialDataset(librarydata, false)
         Grid2.DataSource = GetInitialDataset(queuedata,true)
         LabelTPH_L.Text = "Family Room"
         Me.Text = "Sonos Media Player"
     End Sub
 
-    Private Sub frmPlayer_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        
-    End Sub
+#End Region
+
 
 #Region "Data Handling"
 
-    '// get a short (no scroll bar) or long (w scrollbar) dataset
+    '// get a short (no scroll bar) or long (w scrollbar) dataset from the resource XML files
     Private Function GetInitialDataset(ByRef dataDic As Dictionary(Of String, XmlMusicItem), isSmallDataset As Boolean) As String()
         If isSmallDataset Then
             dataDic = DeSerializeMusicItemLibrary(My.Resources.ShortAlbumTrackList, True)
@@ -48,12 +53,12 @@ Public Class frmPlayer
         Return shadowList
     End Function
 
-    '// replace strings with enum
-    Private Sub UpdateDisplayStyle(dataset As String, tileStyle As eTileStyle)
-        If libraryTileStyle<> tileStyle Then SetTileStyle(dataset, tileStyle)
-    End Sub
+    ''// replace strings with enum
+    'Private Sub UpdateDisplayStyle(dataset As String, tileStyle As eTileStyle)
+    '    If libraryTileStyle<> tileStyle Then SetTileStyle(dataset, tileStyle)
+    'End Sub
 
-
+    '// fill in Library Data Elements
     Public Overrides Function GetLibraryData(colName As String, rowIndex As Integer) As Object
         'Return MyBase.GetLibraryData(colName)
         'If libraryData Is Nothing Then Return ""
@@ -63,33 +68,37 @@ Public Class frmPlayer
         If key IsNot Nothing Then
             If musicItem.Items.ContainsKey(key) Then
                 '// probably a more efficient way to do this!
-                Select Case musicItem.Items(key).itemType
-                    Case itemType.container, itemType.artist
-                        UpdateDisplayStyle("Library", eTileStyle.SingleLine)
-                    Case itemType.track
-                        UpdateDisplayStyle("Library", eTileStyle.MultiLineFull)
-                    Case itemType.album
-                        UpdateDisplayStyle("Library", eTileStyle.MultiLineBasic)
-                    Case Else
-                        UpdateDisplayStyle("Library", eTileStyle.SingleLine)
-                End Select
+                'Select Case musicItem.Items(key).itemType
+                '    Case itemType.container, itemType.artist
+                '        UpdateDisplayStyle("Library", eTileStyle.SingleLine)
+                '    Case itemType.track
+                '        UpdateDisplayStyle("Library", eTileStyle.MultiLineFull)
+                '    Case itemType.album
+                '        UpdateDisplayStyle("Library", eTileStyle.MultiLineBasic)
+                '    Case Else
+                '        UpdateDisplayStyle("Library", eTileStyle.SingleLine)
+                'End Select
 
-
-
-                If musicItem.Items(key).ID="root" Then 
-                    
-                End If
                 Select Case colName
                     Case "colArt"
+                        If musicItem.Items(key)?.ArtURL <> "" Then
+                            If imageCache.ContainsKey(musicItem.Items(key)?.ArtURL) Then
+                                '// this is an attempt to avoid repainting the image if we already have it.
+                                'If TileView1.GetRowCellValue(rowIndex, colArt) <> (musicItem.Items(key).ArtURL)
+                                    Return imageCache(musicItem.Items(key).ArtURL)
+                                    'tileView1.SetRowCellValue(e.ListSourceRowIndex,colURL, (musicItem.Items(key).ArtURL))
+                                'End If
+                            End If
+                        End If
+
                         Return musicItem.Items(key).ArtWork
-                        'Return libraryData.Values(rowIndex).ArtWork
+                        
                     Case "colTitle"
                         Return musicItem.Items(key).Title
-                        'Return libraryData.Values(rowIndex).Title
+                        
                     Case "colLine2"
                         Return musicItem.Items(key)?.Album & "|" & musicItem.Items(key)?.Artist
-                        'e.Value = "<color=ActiveCaption>" & libraryData(e.Row.ToString).Album & "</color>"
-                        'Return libraryData.Values(rowIndex).Album & "|" & libraryData.Values(rowIndex).Artist
+                        
                     Case Else
                         Return ""
                 End Select
@@ -125,10 +134,28 @@ Public Class frmPlayer
     Public Overrides Function NavigateDataset(dataset As String, direction As String) As Boolean
         currentItem = FindParentMusicItem(rootItem, currentItem.SonosServiceID, currentItem.ParentID)
         If currentItem IsNot Nothing Then getData(currentItem)
-        'Return MyBase.NavigateDataset(dataset, direction)
         Return True
     End Function
 #End Region
+
+    Public Overloads Sub SetDataSource(dataSet As eDataSet, musicItem As MusicItem)
+        '// Look at the first item of the dataset. And figure out what to do WRT style
+        '// not sure i like the data form knowing about single lines etc... but don't see a way around it.
+        '// maybe change to (a) Has Artwork and (b) Has MultiLine and let the base form decide how to display the data.
+        Dim style as eTileStyle = eTileStyle.SingleLine
+        Select Case musicItem.Items.Values(0).ItemType
+            Case itemType.container, itemType.artist
+                style = eTileStyle.SingleLine
+            Case itemType.track
+                style = eTileStyle.MultiLineFull
+            Case itemType.album
+                style =  eTileStyle.MultiLineBasic
+            Case Else
+                style = eTileStyle.SingleLine
+        End Select
+        SetDataSource(dataSet, musicItem.ItemIds, style)
+
+    End Sub
 
     '// Get the initial load of music services and put it in a root musicItem. Should be rebuilt when ported back into the main project
     Private Sub SetupMusicServices
@@ -136,12 +163,9 @@ Public Class frmPlayer
         rootItem = InitializeRootMusicServices(musicServices)
         currentItem = rootItem
         '// Assign it to the Grid, stuffing the root MusicItem into the Tag for easy retrieval.
-
-        Grid1.DataSource=currentItem.ItemIds
-
-
-        'Grid1.Tag = rootItem
-        'Grid1.DataSource = rootItem.ItemIds
+        SetDataSource(eDataSet.Library, currentItem)
+        'Grid1.DataSource=currentItem.ItemIds
+        
     End Sub
 
     Private Sub TileView1_ItemRightClick(sender As Object, e As TileViewItemClickEventArgs) Handles TileView1.ItemRightClick
@@ -189,61 +213,58 @@ Public Class frmPlayer
 
     End Sub
 
-    Private Sub getData(musicItem As MusicItem)
-        
+    '// go get the Music Library data we need
+    Private Sub getData(musicItem As MusicItem)     
         '// If it's empty, we better go fetch the data
-            If musicItem.Items.Count = 0 Then
+        If musicItem.Items.Count = 0 Then
             Dim musicServiceInfo As MusicServiceInfo = musicServices(musicItem.SonosServiceID)
-                '// Go Get the Data
-                Dim numItems As Integer = getMetaData(musicServiceInfo, musicItem, 0, ITEMCOUNT)
-                If numItems = 0 Then Exit Sub
-            End If
-            currentItem = musicItem
-            Grid1.DataSource = musicItem.ItemIds
-
+            '// Go Get the Data
+            Dim numItems As Integer = getMetaData(musicServiceInfo, musicItem, 0, ITEMCOUNT)
+            If numItems = 0 Then Exit Sub
+        End If
+        currentItem = musicItem
+        imageLoader.GetImages(currentItem.Items, imageCache)
+        SetDataSource(eDataSet.Library, currentItem)
+        'Grid1.DataSource = musicItem.ItemIds
     End Sub
 
-        '// The main data fetching routine. Need to rework this OUT of the form.
-    Private Function getMetaData(musicServiceInfo As MusicServiceInfo, musicItem As MusicItem, startPosition As Integer, requestedCount As Integer) As Integer
-        Dim index = startPosition
-        Dim numItems As Integer = 0
-        If musicItem IsNot Nothing Then
-            If musicServiceInfo.Url.Contains("pandora") Then
-                startPosition = GetPandoraList(musicServiceInfo, musicItem)
-                numItems = musicItem.ItemCount
-            Else
-                '// if its sirius, then we need to fetch a sessionId
-                If musicServiceInfo.Url.Contains("siriusxm") Then
-                    musicServiceInfo.SessionId = GetSonosSessionID("http://192.168.1.57:1400", musicServiceInfo)
-                End If
-                numItems = getMetaData2(musicServiceInfo, musicItem, musicItem.ID, index, requestedCount)
-            End If
+    Private Sub imageLoader_ArtWorkReceived(url As String, image As Image) Handles imageLoader.ArtWorkReceived
+        Dim parentItem As MusicItem = currentItem
+        If Not imageCache.ContainsKey(url) Then
+            Debug.Print("ADDING TO CACHE: ")
+            imageCache.Add(url, image)
         End If
 
-        'imageLoader.GetImages(musicItem.Items, imageCache)
-        'pg1.SelectedObject = musicItem
-        Return numItems
-    End Function
-
-
-    Public Function FindParentMusicItem(rootItem As MusicItem, SonosServiceID As String, ID As String) As MusicItem
-        '// start with the root
-        If rootItem.ID = ID Then Return rootItem
-        '// Then try each child in items.values
-        For Each item As MusicItem In rootItem.Items.Values
-            '// we are only interested in items (and their children that match the ServiceID)
-            If item.SonosServiceID = SonosServiceID Then
-                '// if we get a match return it.
-                If item.ID = ID Then Return item
-                '// Otherwise, if this item has children, recurse into them
-                If item.Items.Count > 0 Then
-                    Dim subItem As MusicItem = FindParentMusicItem(item, SonosServiceID, ID)
-                    If subItem IsNot Nothing Then Return subItem
-                End If
+        Dim visibleRows As Dictionary(Of Integer, TileViewItem) = TileView1.GetVisibleRows
+        For Each tileViewItem In visibleRows.Values
+            Dim musicItem = GetMusicItemFromRow(TileView1, currentItem, tileViewItem.RowHandle)
+            If musicItem.ArtURL = url Then
+                TileView1.RefreshRow(tileViewItem.RowHandle)
+                'TileView1.SetRowCellValue(tileViewItem.RowHandle, colArtWork, imageCache(url))
             End If
+            musicItem.ArtWork = image
+            'If musicItem IsNot Nothing Then
 
+            '    '// we have a filled row
+            '    If musicItem.ArtURL= url Then
+            '        Dim Col As DevExpress.XtraGrid.Columns.GridColumn = TileView1.Columns.ColumnByFieldName("colArtWork")
+            '        Debug.Print("Received Artwork:" & tileViewItem.RowHandle)
+            '        TileView1.SetRowCellValue(tileViewItem.RowHandle, Col, imageCache(url))
+            '        Exit For
+            '    End If
+
+            'End If
         Next
-        Return Nothing
+    End Sub
+
+    Private Function GetMusicItemFromRow(View As TileView, parentItem As MusicItem, rowIndex As Integer) As MusicItem
+        Dim itemKey As String = parentItem.ItemIds(rowIndex)
+        '// this might be a filled or a blank item
+        If itemKey?.ToString <> "" Then
+            Return parentItem.Items(itemKey)
+        Else
+            Return Nothing
+        End If
     End Function
 
 End Class

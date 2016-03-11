@@ -56,6 +56,18 @@ Public Class frmMediaTemplate
         MultiLineNoArt
     End Enum
 
+    Public Enum eDataSet
+        Library = 0
+        Queue = 1
+    End Enum
+
+    Public Enum eDataSetAction
+        Back
+        Forward
+        Home
+        GetMoreData
+    End Enum
+
     Public libraryTileStyle As eTileStyle = eTileStyle.MultiLineFull
     Public queueTileStyle As eTileStyle = eTileStyle.MultiLineFull
 
@@ -67,7 +79,7 @@ Public Class frmMediaTemplate
 
     Const TILEITEMHEIGHT = 64
     
-    Dim TV_colArt As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
+    Public TV_colArt As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
     Dim TV_colTitle As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
     Dim TV_colLine2 As DevExpress.XtraGrid.Views.Tile.TileViewItemElement 
 
@@ -580,6 +592,10 @@ Public Class frmMediaTemplate
         Return False
     End Function
 
+    Overridable Function NavigateDataset(dataset As eDataSet, rowIndex As Integer, action As eDataSetAction, Optional payload As Integer=10) As Boolean
+        Return False
+    End Function
+
 #End Region
 
 #Region "Important Supporting Methods"    
@@ -770,9 +786,10 @@ Public Class frmMediaTemplate
         If e.IsGetData Then
             AssignTileViewColumns(sender)
             Dim value As Object = GetLibraryData(e.Column.Name, e.ListSourceRowIndex)
+            If value Is Nothing Then Exit Sub
             Select Case e.Column.Name
                 Case "colArt"
-                    e.Value = value 
+                    If e.Value Is Nothing Then e.Value = value 
                 Case "colTitle"
                     e.Value = value
                 Case "colLine2"
@@ -817,6 +834,7 @@ Public Class frmMediaTemplate
             End Select
         End If
     End Sub
+
     Public Function SetTileStyle(dataset As String, tileStyle As eTileStyle) As eTileStyle
         Select Case dataset
             Case "Library"
@@ -914,6 +932,24 @@ Public Class frmMediaTemplate
     Private Sub TileView2_DataSourceChanged(sender As Object, e As EventArgs) Handles TileView2.DataSourceChanged
         If tileScrollBar_Right Is Nothing Then tileScrollBar_Right = TileView2.VScrollBar            '// uses MyTileView, otherwise have to peek inside the Grid or the TileView
         SetTileStyle(TileView2, queueTileStyle)
+    End Sub
+
+    Public Sub SetDataSource(dataSet As eDataSet, dataSource As String(), style As eTileStyle)
+        Dim grid As GridControl = Nothing
+        Select Case dataSet
+            Case eDataSet.Library
+                libraryTileStyle = style
+                grid = Grid1
+            Case eDataSet.Queue
+                queueTileStyle = style
+                grid = Grid2
+        End Select
+        If grid.DataSource Is dataSource Then
+            grid.Views(0).RefreshData
+        Else
+            grid.DataSource = dataSource        '// this will automatically refresh the visible tiles.
+        End If
+
     End Sub
 
 #End Region
@@ -1042,11 +1078,54 @@ Public Class frmMediaTemplate
     End Sub
 
     Private Sub ButtonLPF_L_Click(sender As Object, e As EventArgs) Handles ButtonLPF_L.Click
-        NavigateDataset("Library", "back")
+        'NavigateDataset("Library", "back")
+        NavigateDataset(eDataSet.Library, 0, eDataSetAction.Back)
     End Sub
 
+    Private Sub TileView1_ItemClick(sender As Object, e As TileViewItemClickEventArgs) Handles TileView1.ItemClick
+        NavigateDataset(eDataSet.Library, e.Item.RowHandle, eDataSetAction.Forward)
+    End Sub
 
+    Private Sub ButtonLPH_L_Click(sender As Object, e As EventArgs) Handles ButtonLPH_L.Click
+        NavigateDataset(eDataSet.Library, 0, eDataSetAction.Home)
+    End Sub
 
+    '// find any visible rows with the specified url and update them
+    Public Sub OnArtworkReceived(dataset As eDataSet, url As String)
+        Select Case dataset
+            Case  eDataSet.Library
+                Dim visibleRows As Dictionary(Of Integer, TileViewItem) = TileView1.GetVisibleRows
+                For Each tileViewItem In visibleRows.Values
+                    If GetLibraryData("URL", tileViewItem.RowHandle) = Url Then
+                        TileView1.RefreshRow(tileViewItem.RowHandle)
+                    End If
+                Next
+        End Select
+    End Sub
+
+    Private Sub TileScrollBar_Left_Scroll(sender As Object, e As ScrollEventArgs) Handles TileScrollBar_Left.Scroll
+        Select Case e.Type
+            Case ScrollEventType.EndScroll
+                GetMoreData(eDataSet.Library)
+        End Select
+    End Sub
+
+    Private Sub GetMoreData(dataset As eDataSet)
+    Dim visibleRows As Dictionary(Of Integer, TileViewItem) = Nothing
+        If dataset= eDataSet.Library Then 
+            visibleRows = TileView1.GetVisibleRows
+        Else
+            visibleRows = TileView2.GetVisibleRows
+        End If
+        Dim startRow As Integer =0
+        For Each tileViewItem In visibleRows.Values
+            '// check for empty row. Once found, we're done so Exit For
+            If GetLibraryData("colTitle", tileViewItem.RowHandle) Is Nothing Then
+                NavigateDataset(dataset, tileViewItem.RowHandle, eDataSetAction.GetMoreData, visibleRows.Count)
+                Exit For
+            End If
+        Next
+    End Sub
 
 #End Region
 

@@ -18,7 +18,7 @@ Friend NotInheritable Class Program
             WindowsFormsSettings.SetDPIAware
 			Application.EnableVisualStyles()
 			Application.SetCompatibleTextRenderingDefault(False)
-			Application.Run(New frmPlayer())
+			Application.Run(New frmSonosPlayer())
 		End Sub
 	End Class
 
